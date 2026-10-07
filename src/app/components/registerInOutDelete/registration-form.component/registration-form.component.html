@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Regisztráció (Nem tudsz még regisztrálni !)</h2>
+  <form (ngSubmit)="onSubmit()" #regForm="ngForm" class="w-50 mx-auto shadow p-4 rounded bg-light">
+
+    <!-- Név -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Név</label>
+      <input type="text"
+             class="form-control"
+             id="name"
+             [(ngModel)]="registrationData.name"
+             name="name"
+             placeholder="Add meg a neved"
+             required>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email cím</label>
+      <input type="email"
+             class="form-control"
+             id="email"
+             [(ngModel)]="registrationData.email"
+             name="email"
+             placeholder="pl.: valami@email.com"
+             required>
+    </div>
+
+    <!-- Jelszó -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Jelszó</label>
+      <input type="password"
+             class="form-control"
+             id="password"
+             [(ngModel)]="registrationData.password"
+             name="password"
+             placeholder="Írd be a jelszavad"
+             required>
+    </div>
+
+    <!-- Gomb -->
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary btn-lg">
+        Regisztrálok
+      </button>
+    </div>
+  </form>
+</div>

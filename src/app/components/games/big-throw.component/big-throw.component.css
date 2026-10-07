@@ -1,0 +1,16 @@
+/* halvány ismétlődő háttér */
+:host::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/snail.png');
+  background-repeat: repeat;
+  background-size: 100px auto;
+  background-position: top left;
+  opacity: 0.1;  /* halványság */
+  z-index: -1;
+  pointer-events: none; /* hogy ne akadályozza a kattintásokat */
+}

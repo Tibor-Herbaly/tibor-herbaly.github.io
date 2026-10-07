@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #ffd1b3 0%,
+    #fff8f5 40%,
+    #ffd1b3 70%,
+    #ffd1b3 100%
+  );
+  background-attachment: fixed;
+  padding-top: 40px; /* hogy ne legyen túl felül */
+}

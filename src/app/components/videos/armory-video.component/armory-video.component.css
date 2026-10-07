@@ -1,0 +1,37 @@
+.video-wrap video{
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+/* finom színes overlay a videó fölött (nem blokkolja a kontrollokat) */
+.video-wrap .tint{
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.0), var(--accent));
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+}
+
+/* opcionális: hover hatás */
+.video-wrap:hover .tint { opacity: 0.22; transition: opacity 260ms ease; }
+
+/* halvány ismétlődő háttér */
+:host::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/herbaly_cimer_icon.png');
+  background-repeat: repeat;
+  background-size: 100px auto;
+  background-position: top left;
+  opacity: 0.1;  /* halványság */
+  z-index: -1;
+  pointer-events: none; /* hogy ne akadályozza a kattintásokat */
+}
+

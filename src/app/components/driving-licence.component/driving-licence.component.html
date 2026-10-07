@@ -1,0 +1,24 @@
+<div class="container mt-4">
+  <h3 style="color:darkolivegreen">Tigris-T Autósiskola</h3>
+  <p>Ha jogosítványt szeretnél, válaszd a Tigris-T Autósiskolát ! <br>
+    ( Kattints a képre ! )</p>
+
+  <div>
+    <a href="http://www.tigris-t.hu/" target="_blank">
+      <img src="/assets/images/tigris_wagen_schule.png"
+           alt="Tigris Autósiskola"
+           style="width:200px;height:100px;">
+    </a>
+    <hr>
+  </div>
+  <h3>Tigris-T Autósiskola térképe: (Fejleszéts alatt áll !)</h3>
+  <google-map
+    height="400px"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom">
+    <map-marker [position]="center" title="Tigris Autósiskola"></map-marker>
+  </google-map>
+
+  <hr>
+</div>

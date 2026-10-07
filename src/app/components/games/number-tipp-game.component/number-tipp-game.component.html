@@ -1,0 +1,18 @@
+<div class="container mt-3">
+  <h3>Számkitaláló játék</h3>
+
+  <div class="mb-2">
+    <input type="number" class="form-control" [(ngModel)]="jatekosTipp" [disabled]="vege" placeholder="Tippelj egy számot (1-100)">
+    <button class="btn btn-primary mt-2" (click)="tippelj()" [disabled]="vege">Tippelés</button>
+    <button class="btn btn-secondary mt-2 ms-2" (click)="ujJatek()">Új játék</button>
+  </div>
+
+  <div class="border p-2" style="height: 300px; overflow-y: auto;" #chatDiv>
+    <div *ngFor="let u of uzenetek">
+      <span [ngClass]="u.szin">{{u.szoveg}}</span>
+    </div>
+  </div>
+  <div *ngIf="vege">
+    <button (click)="ujJatek()" class="btn btn-success">Új játék</button>
+  </div>
+</div>

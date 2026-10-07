@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <!-- Felső sáv -->
+  <div class="d-flex justify-content-between align-items-center mb-4 p-2 border-bottom">
+    <h2>Bejelentkezés (Fejlesztés alatt !)</h2>
+    <div *ngIf="currentUser">
+      Üdv, <strong>{{ currentUser.name }}</strong>!
+    </div>
+  </div>
+
+  <!-- Login űrlap -->
+  <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="p-4 border rounded shadow-sm bg-light">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" [(ngModel)]="loginData.email" name="email" id="email"
+             class="form-control" placeholder="Email" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Jelszó</label>
+      <input type="password" [(ngModel)]="loginData.password" name="password" id="password"
+             class="form-control" placeholder="Jelszó" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-50">Belépés</button>
+  </form>
+  <hr>
+</div>

@@ -1,0 +1,97 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 arány */
+  background: #000;
+}
+
+.thumb {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(transparent, rgba(0,0,0,0.25));
+}
+
+.playbtn {
+  font-size: 40px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  width:64px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.iframe-wrapper {
+  position:absolute;
+  inset:0;
+}
+
+.iframe-wrapper iframe {
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.stop {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width:32px;
+  height:32px;
+  cursor:pointer;
+}
+
+.meta {
+  padding: 12px;
+  flex: 0 0 auto;
+}
+
+.title {
+  margin:0 0 6px 0;
+  font-size: 16px;
+}
+
+.desc {
+  margin:0;
+  font-size: 13px;
+  color: #555;
+}
+

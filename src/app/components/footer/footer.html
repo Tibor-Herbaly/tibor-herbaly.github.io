@@ -1,0 +1,15 @@
+<footer class="footer"
+        (mouseenter)="hideFooter()"
+        (mouseleave)="showFooter()"
+        [style.opacity]="footerVisible ? '1' : '0'">
+
+  <div class="footer__content">
+    <img src="assets/images/herbaly_cimer_icon.png" alt="Herbaly" class="footer__icon-left">
+    <span class="footer__text">HerKraz</span>
+    <img src="assets/images/hajnalmadar.png" alt="Hajnalmadar" class="footer__icon-right">
+  </div>
+
+  <div class="footer__copyright">
+    &copy; {{currentYear}}. Minden jog fenntartva!
+  </div>
+</footer>

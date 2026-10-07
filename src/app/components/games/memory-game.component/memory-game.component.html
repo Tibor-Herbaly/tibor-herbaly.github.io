@@ -1,0 +1,28 @@
+<div class="container text-center mt-4">
+  <h2 class="mb-3">🧠 Memóriajáték</h2>
+  <p>Párosítsd a kártyákat! | Lépések: {{ moves }}</p>
+
+  <div class="row row-cols-7 g-2 justify-content-center">
+    <div class="col" *ngFor="let card of cards">
+      <div class="card text-center shadow-sm"
+           (click)="flipCard(card)"
+           [ngClass]="{'flipped': card.flipped || card.matched}">
+        <div class="card-body p-3">
+          <span *ngIf="card.flipped || card.matched" style="font-size: 2rem;">
+            {{ card.image }}
+          </span>
+          <span *ngIf="!card.flipped && !card.matched" style="font-size: 2rem;">
+            ❓
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="gameWon" class="alert alert-success mt-4">
+    🎉 Gratulálok! Minden párt megtaláltál {{ moves }} lépésből.
+  </div>
+
+  <button class="btn btn-primary mt-3" (click)="startGame()">🔄 Új játék</button>
+  <hr>
+</div>

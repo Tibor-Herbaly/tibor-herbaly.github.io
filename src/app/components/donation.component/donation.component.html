@@ -1,0 +1,43 @@
+<div class="container">
+  <h1>🎯 Támogasd a Lotty Kutyus etetését ! (Sajnos nem elérhető !) 😄</h1>
+  <p>Játékból küldj adományt a Lotty kutyusnak ! 🐶</p>
+  <p>Minden forint számít. Köszönjük a támogatásodat !</p>
+
+  <form (ngSubmit)="donate()">
+    <input
+      type="text"
+      placeholder="Neved"
+      [(ngModel)]="name"
+      name="name"
+      required/>
+
+    <input
+      type="number"
+      placeholder="Adomány (Ft)"
+      [(ngModel)]="amount"
+      name="amount"
+      required/>
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Feldolgozás...' : 'Adományozok' }}
+    </button>
+  </form>
+
+  <div id="summary">
+    <h2>💰 Összes adomány: <span>{{ summary.total }}</span> Ft</h2>
+    <div class="chat-window">
+      <ul>
+        <li *ngFor="let d of summary.donations.slice().reverse(); let first = first"
+            [class.latest]="first">
+          + {{ d.amount }} Ft ({{ d.date }})
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--    <ul>--><!--Innen kezdődik, h' az utolsó legyen beszínezve.-->
+  <!--      <li *ngFor="let d of summary.donations; let last = last"-->
+  <!--          [class.latest]="last">-->
+  <!--        + {{ d.amount }} Ft ({{ d.date }})-->
+  <!--      </li>-->
+  <!--    </ul>-->
+</div>
