@@ -35,7 +35,7 @@ jobs:
         run: npm run build -- --configuration production
 
       - name: Create 404 page
-        run: cp ./dist/angular-frontend/browser/index.html ./dist/angular-frontend/browser/404.html
+        run: cp ./dist/angular-frontend/index.html ./dist/angular-frontend/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
