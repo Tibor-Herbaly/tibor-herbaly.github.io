@@ -34,18 +34,17 @@ jobs:
       - name: Build Angular
         run: npm run build -- --configuration production
 
-      - name: Show build files
-        run: |
-              echo "=== dist/angular-frontend ==="
-              find ./dist/angular-frontend -maxdepth 3 -type f | sort
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      - name: Create GitHub Pages files
+        run: |
+            cp ./dist/angular-frontend/browser/index.html ./dist/angular-frontend/browser/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/angular-frontend
+          path: ./dist/angular-frontend/browser
 
       - name: Deploy to GitHub Pages
         id: deployment
