@@ -34,6 +34,10 @@ jobs:
       - name: Build Angular
         run: npm run build -- --configuration production
 
+        - name: Show build files
+        run: |  echo "=== dist/angular-frontend ===" 
+                find ./dist/angular-frontend -maxdepth 3 -type f | sort
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
