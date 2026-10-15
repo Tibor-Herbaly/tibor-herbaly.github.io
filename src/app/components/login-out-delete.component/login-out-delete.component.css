@@ -1,0 +1,24 @@
+.login-container {
+  max-width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.captcha {
+  margin-top: 15px;
+}
+
+.page-background {
+  min-height: 100vh;
+  /*background-image: url('/assets/');*/
+  background-size: cover;       /* TELJES kép */
+  background-repeat: no-repeat;
+  background-position: center center;
+  image-rendering: auto;        /* ÉLES */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: relative;
+  padding-top: 40px;
+}

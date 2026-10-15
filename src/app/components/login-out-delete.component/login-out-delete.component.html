@@ -1,0 +1,225 @@
+
+<div class="page-background">
+  <div class="container mt-1">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-4">
+
+            <!-- REGISZTRÁCIÓ -->
+            <div class="mb-4">
+              <app-register></app-register>
+            </div>
+
+            <hr>
+
+            <p class="text-muted">
+              Ha már regisztrálva vagy, itt bejelentkezhetsz:
+            </p>
+
+            <h4>
+              Bejelentkezés (Fejleszétés alatt !)
+              <span *ngIf="userName" class="text-success">
+                (Bejelentkezve: {{ userName }})
+              </span>
+            </h4>
+
+            <form (ngSubmit)="onLogin()">
+
+              <!-- E-MAIL -->
+              <div class="m-3">
+                <label for="email" class="form-label">E-mail:</label>
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                >
+              </div>
+
+              <!-- JELSZÓ -->
+              <div class="m-3">
+                <label for="password" class="form-label">Jelszó:</label>
+
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  class="form-control"
+                  name="password"
+                  [(ngModel)]="password"
+                  [required]="!codeSent"
+                  placeholder="Add meg a jelszót"
+                  autocomplete="current-password"
+                >
+
+                <button
+                  class="btn btn-outline-secondary mt-2"
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                >
+                  {{ showPassword ? 'Ne lássam a jelszót' : 'Lássam a jelszót' }}
+                </button>
+
+                <!-- ELFELEJTETT JELSZÓ -->
+                <div class="mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 text-decoration-none"
+                    (click)="showForgotPassword = !showForgotPassword"
+                  >
+                    Elfelejtetted a jelszavadat ? Kattints ide !
+                  </button>
+                </div>
+              </div>
+
+              <!-- LENYÍLÓ E-MAIL-KÉRŐ RÉSZ -->
+              <div
+                *ngIf="showForgotPassword"
+                class="m-3 p-3 border rounded-3 bg-light"
+              >
+                <h5>Ideiglenes belépési kód kérése</h5>
+
+                <p class="text-muted">
+                  Add meg az e-mail-címedet, amellyel regisztráltál.
+                  A régi jelszavad nem változik meg.
+                </p>
+
+                <label for="recoveryEmail" class="form-label">
+                  Regisztrált e-mail-cím:
+                </label>
+
+                <input
+                  id="recoveryEmail"
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="recoveryEmail"
+                  name="recoveryEmail"
+                  placeholder="pelda@email.com"
+                  autocomplete="email"
+                >
+
+                <button
+                  type="button"
+                  class="btn btn-outline-primary mt-3"
+                  (click)="requestLoginCode()"
+                >
+                  📧 Ideiglenes kód küldése
+                </button>
+
+                <p
+                  *ngIf="recoveryMessage"
+                  class="text-success mt-3 mb-0"
+                  role="status"
+                >
+                  {{ recoveryMessage }}
+                </p>
+
+                <p
+                  *ngIf="recoveryError"
+                  class="text-danger mt-3 mb-0"
+                  role="alert"
+                >
+                  {{ recoveryError }}
+                </p>
+
+                <!-- E-MAILBEN KAPOTT KÓD -->
+                <div *ngIf="codeSent" class="mt-4">
+                  <label for="temporaryLoginCode" class="form-label">
+                    Ide kérem az e-mailben kapott ideiglenes kódot:
+                  </label>
+
+                  <input
+                    id="temporaryLoginCode"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="temporaryLoginCode"
+                    name="temporaryLoginCode"
+                    placeholder="8 karakteres kód"
+                    minlength="8"
+                    maxlength="8"
+                    autocomplete="one-time-code"
+                    autocapitalize="off"
+                    spellcheck="false"
+                  >
+
+                  <small class="text-muted">
+                    A kód 3 percig érvényes, és csak egyszer használható.
+                  </small>
+                </div>
+              </div>
+
+              <!-- CAPTCHA -->
+              <div class="captcha m-3">
+                <p><b>{{ captchaQuestion }}</b></p>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="captchaAnswer"
+                  name="captcha"
+                  placeholder="Írd ide a választ"
+                  required
+                  inputmode="numeric"
+                >
+
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary mt-2"
+                  (click)="loadCaptcha()"
+                >
+                  🔄 Új kérdés
+                </button>
+              </div>
+
+              <!-- HIBAÜZENET -->
+              <p
+                *ngIf="errorMessage"
+                class="text-danger"
+                role="alert"
+              >
+                {{ errorMessage }}
+              </p>
+
+              <!-- BELÉPÉS -->
+              <button
+                class="btn btn-primary"
+                type="submit"
+              >
+                Belépés
+              </button>
+
+              <hr>
+
+              <!-- KIJELENTKEZÉS -->
+              <button
+                type="button"
+                (click)="onLogout()"
+                class="btn btn-danger-subtle"
+              >
+                🚪 Kilépés
+              </button>
+
+              <hr>
+
+              <!-- FIÓK TÖRLÉSE -->
+              <div class="mt-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  (click)="onDeleteAccount()"
+                >
+                  🗑️ Fiók törlése
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

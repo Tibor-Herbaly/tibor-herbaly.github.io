@@ -1,89 +1,314 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand" href="home"> <i class="bi bi-person-plus"></i> Udvar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+
+    <!-- Logó / Udvar -->
+    <a class="navbar-brand" href="home">
+      <i class="bi bi-house-door-fill"></i>
+      Udvar
+    </a>
+
+    <!-- Mobil menü gomb -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Navigáció megnyitása">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Felhasználó: mobilon is a hamburger mellett -->
+    <div class="user-menu-mobile">
+      <ng-container *ngIf="isLoggedIn; else mobileLogin">
+        <div class="dropdown">
+          <button
+            class="user-menu-button"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-label="Felhasználói menü">
+
+            <span class="profile-avatar">
+              <i class="bi bi-person"></i>
+            </span>
+
+            <span class="user-info">
+              <span class="user-display-name">{{ userName }}</span>
+              <span class="profile-email">{{ userEmail }}</span>
+            </span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+            <li>
+              <a class="dropdown-item" href="profile">
+                <i class="bi bi-person-circle"></i> Profilom
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="settings">
+                <i class="bi bi-gear"></i> Beállítások
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button
+                class="dropdown-item logout-item"
+                type="button"
+                (click)="logout()">
+                <i class="bi bi-box-arrow-right"></i> Kijelentkezés
+              </button>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <ng-template #mobileLogin>
+        <a class="login-icon-button" href="login-out-delete"
+           aria-label="Bejelentkezés" title="Bejelentkezés">
+          <i class="bi bi-person-circle"></i>
+        </a>
+      </ng-template>
+    </div>
+
+    <!-- Navigációs menü -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi-box-arrow-in-right"></i> Regi/Be/Kilép/Törlés
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="register">Regisztráció</a></li>
-            <li><a class="dropdown-item" href="login">Bejelentkezés</a></li>
-            <li><a class="dropdown-item" href="#">Kijelentkezés</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Törlés</a></li>
-          </ul>
-        </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="driving-licence"> <i class="bi bi-car-front"></i> Jogosítvány ?</a>
+          <a class="nav-link" href="login-out-delete">
+            <i class="bi bi-person-plus"></i> Regi/Be/Ki/Törlés
+          </a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="android-app">
+            <i class="bi bi-phone"></i> Android Appok
+          </a>
+        </li>
+
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi-dice-5"></i> Játékok
+          <a class="nav-link dropdown-toggle" href="#"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-dice-5"></i> Játékok
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="game1">Szám Tipp 1-100</a></li>
             <li><a class="dropdown-item" href="dice-tipp2">Dobókocka Tipp</a></li>
             <li><a class="dropdown-item" href="big-throw">Nagyobbat Dobni</a></li>
             <li><a class="dropdown-item" href="memory-game">Memória Játék</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi-camera-video"></i> Videó/Média
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="music"><i class="bi bi-music-note-beamed"></i> Zene</a></li>
-            <li><a class="dropdown-item" href="american-music"><i class="bi bi-music-note-beamed"></i> Amerikai zene</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="armory-video"><i class="bi bi-shield-shaded"></i> Herály Tibor Címere</a></li>
           </ul>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-box"></i> Egyebek
+          <a class="nav-link dropdown-toggle" href="#"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-camera-video"></i> Videó/Média
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#"><i class="bi bi-journal-text"></i> Írások</a></li>
-            <li><a class="dropdown-item" href="images"><i class="bi bi-image"></i> Képek</a></li>
+            <li>
+              <a class="dropdown-item" href="music">
+                <i class="bi bi-music-note-beamed"></i> Zene
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="american-music">
+                <i class="bi bi-music-note-beamed"></i> Amerikai zene
+              </a>
+            </li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="donation"><i class="bi bi-heart"></i> Adomány</a>
-                <a class="dropdown-item" href="page"><i class="bi bi-star-fill"></i> Értékelés</a>
-                <a class="dropdown-item" href="contact"><i class="bi-envelope"></i> Kapcsolat</a>
+            <li>
+              <a class="dropdown-item" href="armory-video">
+                <i class="bi bi-shield-shaded"></i> Herály Tibor Címere
+              </a>
             </li>
           </ul>
         </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-box"></i> Egyebek
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="bi bi-journal-text"></i> Írások
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="images">
+                <i class="bi bi-image"></i> Képek
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item" href="donation">
+                <i class="bi bi-heart"></i> Adomány
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="page">
+                <i class="bi bi-star-fill"></i> Értékelés
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="contact">
+                <i class="bi bi-envelope"></i> Kapcsolat
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/news">
+            <i class="bi bi-newspaper"></i>
+            Hírek
+          </a>
+        </li>
+
       </ul>
 
-      <form class="d-flex"
-            role="search"
-            (ngSubmit)="siteSearch()">
+      <!-- Kereső és asztali felhasználói menü -->
+      <div class="navbar-right">
 
-        <input class="form-control me-2"
-               type="search"
-               placeholder="Search"
-               aria-label="Search"
-               [(ngModel)]="searchQuery"
-               name="search">
+        <!-- ===== IDŐJÁRÁSKÁRTYA ===== -->
+        <button class="weather-navbar-card weather-navbar-trigger"
+             type="button"
+             (click)="openWeatherDetails()"
+             aria-haspopup="dialog"
+             aria-label="Részletes időjárás megnyitása"
+             *ngIf="weather as currentWeather; else weatherStatus">
 
-        <button class="btn btn-outline-success" type="submit">
-          Search
+          <img
+            class="weather-navbar-icon"
+            [src]="weatherIconUrl"
+            [alt]="currentWeather.description"
+            width="44"
+            height="44">
+
+          <div class="weather-navbar-info">
+    <span class="weather-city">
+      {{ currentWeather.city }}
+    </span>
+
+            <span class="weather-description">
+      {{ currentWeather.description }}
+    </span>
+          </div>
+
+          <span class="weather-temperature">
+    {{ currentWeather.temperature | number:'1.0-0' }} °C
+  </span>
         </button>
-      </form>
 
+        <!-- Betöltés és hiba jelzése -->
+        <ng-template #weatherStatus>
+
+          <div class="weather-navbar-card weather-navbar-status"
+               *ngIf="weatherLoading">
+            <span class="weather-status-icon">🌤️</span>
+            <span>Időjárás betöltése...</span>
+          </div>
+
+          <div class="weather-navbar-card weather-navbar-status weather-error"
+               *ngIf="weatherError">
+            <i class="bi bi-cloud-slash"></i>
+            <span>Időjárás nem elérhető</span>
+
+            <button
+              class="weather-retry-button"
+              type="button"
+              (click)="loadWeather()"
+              aria-label="Időjárás újrapróbálása"
+              title="Újrapróbálás">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+          </div>
+
+        </ng-template>
+        <!-- ===== IDŐJÁRÁSKÁRTYA VÉGE ===== -->
+
+        <form class="d-flex navbar-search"
+              role="search"
+              (ngSubmit)="siteSearch()">
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Keresés..."
+            aria-label="Keresés"
+            [(ngModel)]="searchQuery"
+            name="search">
+
+          <button class="btn btn-outline-primary" type="submit"
+                  aria-label="Keresés indítása">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+
+        <div class="user-menu-desktop">
+          <ng-container *ngIf="isLoggedIn; else desktopLogin">
+            <div class="dropdown">
+              <button
+                class="user-menu-button"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+
+                <span class="profile-avatar">
+                  <i class="bi bi-person"></i>
+                </span>
+
+                <span class="user-info">
+                  <span class="user-display-name">{{ userName }}</span>
+                  <span class="profile-email">{{ userEmail }}</span>
+                </span>
+                <i class="bi bi-chevron-down"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                <li>
+                  <a class="dropdown-item" href="profile">
+                    <i class="bi bi-person-circle"></i> Profilom
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="settings">
+                    <i class="bi bi-gear"></i> Beállítások
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <button class="dropdown-item logout-item"
+                          type="button" (click)="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Kijelentkezés
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+
+          <ng-template #desktopLogin>
+            <a class="login-icon-button" href="login-out-delete"
+               title="Bejelentkezés" aria-label="Bejelentkezés">
+              <i class="bi bi-person-circle"></i>
+              <span>Bejelentkezés</span>
+            </a>
+          </ng-template>
+        </div>
+
+      </div>
     </div>
   </div>
 </nav>
 
-
+<app-weather-details
+  *ngIf="weatherDetailsOpen"
+  [city]="weatherCity"
+  (cityChange)="onWeatherCityChanged($event)"
+  (close)="closeWeatherDetails()">
+</app-weather-details>

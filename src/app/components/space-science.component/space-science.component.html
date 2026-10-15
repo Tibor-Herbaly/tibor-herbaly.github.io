@@ -1,0 +1,209 @@
+
+<div class="space-page">
+
+  <section class="space-hero">
+    <div class="hero-content">
+      <div class="hero-badge">🚀 NASA • Űrkutatás • Tudomány</div>
+
+      <h1>Űrkutatás és Tudomány</h1>
+
+      <p class="hero-subtitle">
+        Fedezd fel a világűr titkait, a bolygókat,
+        a galaxisokat és a tudomány legizgalmasabb területeit!
+      </p>
+
+      <div class="hero-stats">
+        <div>
+          <span class="stat-icon">🌌</span>
+          <span>Világegyetem</span>
+        </div>
+        <div>
+          <span class="stat-icon">🪐</span>
+          <span>Bolygók</span>
+        </div>
+        <div>
+          <span class="stat-icon">🔬</span>
+          <span>Felfedezések</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="news-container">
+
+    <div class="section-heading">
+      <div>
+        <span class="section-kicker">FOLYAMATOSAN LEKÉRHETŐ TARTALMAK</span>
+        <h2>Felfedezések a világűrből</h2>
+        <p>Válogass a NASA képei és videói között!</p>
+      </div>
+
+      <span class="nasa-badge">NASA API</span>
+    </div>
+
+    <section class="search-panel">
+
+      <div class="search-row">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔎</span>
+
+          <input
+            type="text"
+            class="form-control search-input"
+            [(ngModel)]="searchText"
+            (keyup.enter)="search()"
+            placeholder="Mit szeretnél felfedezni? Pl. Jupiter, fekete lyuk..."
+            aria-label="Keresés a NASA tartalmai között">
+        </div>
+
+        <button
+          type="button"
+          class="btn search-button"
+          (click)="search()">
+          Keresés
+        </button>
+      </div>
+
+      <label for="spaceCategory" class="category-label">
+        Témakör kiválasztása
+      </label>
+
+      <select
+        id="spaceCategory"
+        class="form-select category-select"
+        [(ngModel)]="selectedCategory"
+        (change)="changeCategory()">
+
+        <option
+          *ngFor="let category of categories"
+          [value]="category.value">
+          {{ category.label }}
+        </option>
+
+      </select>
+
+    </section>
+
+    <div class="loading-panel" *ngIf="loading">
+      <div class="spinner-border text-info" role="status">
+        <span class="visually-hidden">Betöltés...</span>
+      </div>
+      <p>A világűr felfedezése folyamatban... 🌠</p>
+    </div>
+
+    <div class="alert alert-warning error-panel"
+         *ngIf="!loading && errorMessage">
+      {{ errorMessage }}
+
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark ms-2"
+        (click)="loadNews()">
+        Újrapróbálás
+      </button>
+    </div>
+
+    <div class="row g-4 news-grid"
+         *ngIf="!loading && news.length > 0">
+
+      <div
+        class="col-12 col-md-6 col-xl-4"
+        *ngFor="let item of news">
+
+        <article class="news-card">
+
+          <div class="news-image-wrapper">
+            <img
+              [src]="item.imageUrl"
+              [alt]="item.title"
+              class="news-image"
+              loading="lazy">
+
+            <span class="media-badge">
+              {{ item.mediaType === 'video' ? '▶ Videó' : '🖼️ Kép' }}
+            </span>
+          </div>
+
+          <div class="news-card-body">
+
+            <div class="news-meta">
+              <span>{{ item.center }}</span>
+
+              <span *ngIf="item.date">
+                {{ item.date | date:'yyyy. MM. dd.':'':'hu-HU' }}
+              </span>
+            </div>
+
+            <h3>{{ item.title }}</h3>
+
+            <p class="news-description">
+              {{ shortDescription(item.description) }}
+            </p>
+
+            <div class="news-keywords"
+                 *ngIf="item.keywords.length > 0">
+              <span *ngFor="let keyword of item.keywords.slice(0, 3)">
+                {{ keyword }}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              class="btn source-button"
+              (click)="openSource(item.sourceUrl)">
+              Eredeti tartalom megnyitása
+              <span aria-hidden="true">↗</span>
+            </button>
+
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <section class="empty-panel"
+             *ngIf="!loading && !errorMessage && news.length === 0 && hasSearched">
+      <span>🔭</span>
+      <h3>Nincs megjeleníthető találat</h3>
+      <p>Próbálj másik keresőkifejezést vagy témakört!</p>
+    </section>
+
+    <nav
+      class="pagination-panel"
+      *ngIf="!loading && news.length > 0"
+      aria-label="Találatok lapozása">
+
+      <button
+        type="button"
+        class="btn pagination-button"
+        [disabled]="currentPage === 1"
+        (click)="previousPage()">
+        ← Előző oldal
+      </button>
+
+      <span>{{ currentPage }}. oldal</span>
+
+      <button
+        type="button"
+        class="btn pagination-button"
+        (click)="nextPage()">
+        Következő oldal →
+      </button>
+
+    </nav>
+
+    <div class="source-note">
+      <p>
+        🌍 Az adatok forrása a NASA Image and Video Library.
+        A tartalmak és a leírások eredeti nyelven jelenhetnek meg.
+      </p>
+      <a
+        href="https://images.nasa.gov/"
+        target="_blank"
+        rel="noopener noreferrer">
+        NASA Image and Video Library ↗
+      </a>
+    </div>
+
+  </main>
+</div>

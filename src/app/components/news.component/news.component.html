@@ -1,0 +1,209 @@
+
+<div class="news-page">
+
+  <section class="news-hero">
+    <div class="news-hero-content">
+
+      <span class="hero-label">
+        <i class="bi bi-newspaper"></i>
+        HÍREK EGY HELYEN
+      </span>
+
+      <h1 *ngIf="!selectedCategory">
+        Hírek és újdonságok
+      </h1>
+
+      <h1 *ngIf="selectedCategory">
+        {{ selectedCategory.title }}
+      </h1>
+
+      <p *ngIf="!selectedCategory">
+        Fedezd fel a világ legérdekesebb híreit
+        hat különböző témakörben !
+      </p>
+      <p>A hírek betöltésére 2-3 percet is várni kellhet, mivel a hírek külső, RSS-forrásból érkeznek.</p>
+
+      <p *ngIf="selectedCategory">
+        {{ selectedCategory.description }}
+      </p>
+
+    </div>
+  </section>
+
+  <main class="news-content">
+
+    <!-- A hat kategóriakártya -->
+    <ng-container *ngIf="!selectedCategory">
+
+      <div class="section-heading">
+        <div>
+          <span class="section-label">VÁLASSZ TÉMAKÖRT</span>
+          <h2>Milyen hírek érdekelnek?</h2>
+          <p>Kattints a kiválasztott kategóriára!</p>
+        </div>
+
+        <i class="bi bi-globe2 heading-icon"></i>
+      </div>
+
+      <div class="row g-4">
+
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          *ngFor="let category of categories">
+
+          <a
+            class="category-card"
+            [ngClass]="'category-' + category.color"
+            [routerLink]="category.path">
+
+            <div class="category-card-top">
+              <span class="category-icon">
+                <i class="bi" [ngClass]="category.icon"></i>
+              </span>
+
+              <span class="category-arrow">
+                <i class="bi bi-arrow-up-right"></i>
+              </span>
+            </div>
+
+            <div class="category-card-body">
+              <h3>{{ category.title }}</h3>
+              <p>{{ category.description }}</p>
+            </div>
+
+            <div class="category-card-footer">
+              <span>Hírek megnyitása</span>
+              <i class="bi bi-arrow-right"></i>
+            </div>
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <section class="news-info">
+        <i class="bi bi-info-circle"></i>
+
+        <div>
+          <h3>Friss hírek, érdekes felfedezések</h3>
+          <p>
+            A hírek külső, ingyenesen elérhető RSS-forrásból
+            érkeznek. A cikkek teljes tartalmát az eredeti
+            hírportálon olvashatod el.
+          </p>
+        </div>
+      </section>
+
+    </ng-container>
+
+    <!-- A kiválasztott hírcsatorna -->
+    <section class="news-feed" *ngIf="selectedCategory">
+
+      <div class="feed-toolbar">
+        <div>
+          <span class="section-label">FRISS HÍREK</span>
+          <p class="feed-source" *ngIf="feedTitle">
+            Forrás: {{ feedTitle }}
+          </p>
+        </div>
+
+        <button
+          class="btn refresh-button"
+          type="button"
+          (click)="retryLoading()"
+          [disabled]="loading">
+
+          <i class="bi bi-arrow-clockwise"></i>
+          Frissítés
+        </button>
+      </div>
+
+      <!-- Betöltés -->
+      <div class="feed-message" *ngIf="loading">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Betöltés...</span>
+        </div>
+
+        <h3>Hírek betöltése...</h3>
+        <p>Kérlek, várj egy pillanatot!</p>
+      </div>
+
+      <!-- Hibaüzenet -->
+      <div class="feed-message error-message" *ngIf="!loading && errorMessage">
+        <i class="bi bi-exclamation-triangle"></i>
+        <h3>Most nem sikerült betölteni a híreket</h3>
+        <p>{{ errorMessage }}</p>
+
+        <button
+          class="btn refresh-button"
+          type="button"
+          (click)="retryLoading()">
+
+          <i class="bi bi-arrow-clockwise"></i>
+          Újrapróbálom
+        </button>
+      </div>
+
+      <!-- A hírek listája -->
+      <div class="row g-4" *ngIf="!loading && newsItems.length > 0">
+
+        <div
+          class="col-12 col-lg-6"
+          *ngFor="let news of newsItems">
+
+          <article class="news-article">
+
+            <img
+              *ngIf="news.thumbnail"
+              class="news-thumbnail"
+              [src]="news.thumbnail"
+              [alt]="news.title"
+              loading="lazy"
+              referrerpolicy="no-referrer">
+
+            <div class="news-article-content">
+
+              <div class="news-date" *ngIf="news.pubDate">
+                <i class="bi bi-clock"></i>
+                {{ formatDate(news.pubDate) }}
+              </div>
+
+              <h3>{{ news.title }}</h3>
+
+              <p
+                class="news-description"
+                *ngIf="news.description"
+                [innerHTML]="news.description">
+              </p>
+
+              <a
+                class="read-news-link"
+                [href]="news.link"
+                target="_blank"
+                rel="noopener noreferrer">
+
+                Eredeti cikk megnyitása
+                <i class="bi bi-box-arrow-up-right"></i>
+              </a>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+      <div class="back-to-news">
+        <a class="btn back-button" routerLink="/news">
+          <i class="bi bi-arrow-left"></i>
+          Vissza a hírkategóriákhoz
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

@@ -1,6 +1,6 @@
 export interface RegistrationRequestModel {
 
-  name: string;
   email: string;
+  name: string;
   password: string;
 }

@@ -1,0 +1,138 @@
+<div class="register-container mt-4">
+  <h4>Regisztráció (Fejleszétés alatt !)</h4>
+
+  <form *ngIf="!verificationPhase" #f="ngForm" (ngSubmit)="onRegister()">
+
+    <!-- E-mail -->
+    <div class="form-group m-3">
+      <label>Email:</label>
+      <input
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        #emailRef="ngModel"
+        [class.is-invalid]="emailRef.invalid && emailRef.touched"
+        [class.is-valid]="emailRef.valid && emailRef.touched"
+      />
+      <div *ngIf="emailRef.invalid && emailRef.touched" class="invalid-feedback">
+        Kérlek, adj meg egy érvényes e-mail címet !
+      </div>
+    </div>
+
+    <!-- Név -->
+    <div class="form-group m-3">
+      <label>Név:</label>
+      <input type="text" [(ngModel)]="name" name="name" required #nameRef="ngModel"
+             [class.is-invalid]="nameRef.invalid && nameRef.touched"
+             [class.is-valid]="nameRef.valid && nameRef.touched"/>
+      <div *ngIf="nameRef.invalid && nameRef.touched" class="invalid-feedback">
+        Kérlek, add meg a Neved !
+      </div>
+    </div>
+
+    <!-- Jelszó -->
+    <div class="form-group m-3">
+      <label for="password">Jelszó:</label>
+
+      <div class="input-group">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-control"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          #passRef="ngModel"
+          [class.is-invalid]="!isPasswordStrong() && passRef.touched"
+          [class.is-valid]="isPasswordStrong() && passRef.touched"
+          placeholder="Add meg a jelszót"
+        />
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="togglePasswordVisibility()"
+        >
+          {{ showPassword ? 'Ne lássam a Kódot' : 'Lássam a Kódot' }}
+        </button>
+      </div>
+
+      <!-- 🔴 Jelszó erősség visszajelzés -->
+      <div *ngIf="passRef.touched">
+        <small
+          [style.color]="isPasswordStrong() ? 'green' : 'red'"
+        >
+          {{
+            isPasswordStrong()
+              ? '✔ A jelszó elég erős.'
+              : '✖ Legalább 1 betű, 1 szám, és minimum 4 karakter szükséges.'
+          }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Jelszó megerősítése -->
+    <div class="form-group m-3">
+      <label for="confirmPassword">Jelszó még egyszer:</label>
+
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        class="form-control"
+        id="confirmPassword"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        required
+        #confirmPassRef="ngModel"
+        [class.is-invalid]="
+        confirmPassRef.touched &&
+        (!confirmPassRef.valid || !passwordsMatch())
+      "
+        [class.is-valid]="
+        confirmPassRef.touched &&
+        confirmPassRef.valid &&
+        passwordsMatch()
+      "
+        placeholder="Írd be újra a jelszót"
+      />
+
+      <!-- Jelszavak egyezésének ellenőrzése -->
+      <div
+        *ngIf="confirmPassRef.touched && confirmPassword !== ''"
+        class="mt-1"
+      >
+        <small
+          [style.color]="passwordsMatch() ? 'green' : 'red'"
+        >
+          {{
+            passwordsMatch()
+              ? '✔ A két jelszó megegyezik.'
+              : '✖ A két jelszó nem egyezik!'
+          }}
+        </small>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="f.invalid || !isPasswordStrong() || !passwordsMatch()"
+    >
+      Regisztráció
+    </button>
+  </form>
+
+  <!-- Verifikációs kód -->
+  <form *ngIf="verificationPhase" (ngSubmit)="onVerifyCode()">
+    <div class="m-3">
+      <p>3 próbálkozásod van !</p>
+      <label>Regisztrációs kód:</label>
+      <input type="text" [(ngModel)]="verificationCode" name="verificationCode" required />
+    </div>
+    <button type="submit">Kód ellenőrzése</button>
+  </form>
+
+  <!-- Üzenetek -->
+  <p style="color:green" *ngIf="successMessage">{{ successMessage }}</p>
+  <p style="color:red" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>

@@ -6,11 +6,7 @@ import { App } from './app';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import { Navbar } from './components/navbar/navbar';
-import { RegistrationFormComponent } from './components/registerInOutDelete/registration-form.component/registration-form.component';
-import { LoginFormComponent } from './components/registerInOutDelete/login-form.component/login-form.component';
-import { LogoutFormComponent } from './components/registerInOutDelete/logout-form.component/logout-form.component';
-import { DeleteFormComponent } from './components/registerInOutDelete/delete-form.component/delete-form.component';
-import { DrivingLicenceComponent } from './components/driving-licence.component/driving-licence.component';
+
 import { BigThrowComponent } from './components/games/big-throw.component/big-throw.component';
 import { DiceTippComponent } from './components/games/dice-tipp.component/dice-tipp.component';
 import { MemoryGameComponent } from './components/games/memory-game.component/memory-game.component';
@@ -28,16 +24,19 @@ import { FordPromotionComponent } from './components/promotions/ford-promotion.c
 import { ContactComponent } from './components/contact.component/contact.component';
 import { PageRatingComponent } from './components/page-rating.component/page-rating.component';
 import { MusicComponent } from './components/videos/music.component/music.component';
+import { LoginOutDeleteComponent } from './components/login-out-delete.component/login-out-delete.component';
+import { RegisterComponent } from './components/register.component/register.component';
+import { Profile } from './components/profile/profile';
+import { SpaceScienceComponent } from './components/space-science.component/space-science.component';
+import { NewsComponent } from './components/news.component/news.component';
+import { WeatherDetailsComponent } from './components/weather-details.component/weather-details.component';
+
 
 @NgModule({
   declarations: [
     App,
     Navbar,
-    RegistrationFormComponent,
-    LoginFormComponent,
-    LogoutFormComponent,
-    DeleteFormComponent,
-    DrivingLicenceComponent,
+    WeatherDetailsComponent,
     BigThrowComponent,
     DiceTippComponent,
     MemoryGameComponent,
@@ -53,14 +52,19 @@ import { MusicComponent } from './components/videos/music.component/music.compon
     FordPromotionComponent,
     ContactComponent,
     PageRatingComponent,
-    MusicComponent
+    MusicComponent,
+    LoginOutDeleteComponent,
+    RegisterComponent,
+    Profile
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    SpaceScienceComponent,
+    NewsComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

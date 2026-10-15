@@ -1,0 +1,176 @@
+
+<div class="profile-page">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <i class="bi bi-person"></i>
+    </div>
+
+    <div>
+      <h1>Profilom</h1>
+      <p>Személyes adataid és biztonsági beállításaid</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-message">
+    <span class="spinner-border spinner-border-sm me-2"></span>
+    Feldolgozás folyamatban...
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="bi bi-check-circle me-2"></i>
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-circle me-2"></i>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="user" class="profile-grid">
+
+    <!-- Személyes adatok -->
+    <section class="profile-card">
+      <div class="card-heading">
+        <i class="bi bi-person-vcard"></i>
+        <h2>Személyes adatok</h2>
+      </div>
+
+      <div class="current-data">
+        <p>
+          <span>Felhasználói azonosító</span>
+          <strong>{{ user.id }}</strong>
+        </p>
+
+        <p>
+          <span>Jelenlegi név</span>
+          <strong>{{ user.name }}</strong>
+        </p>
+
+        <p>
+          <span>Jelenlegi e-mail-cím</span>
+          <strong class="email-value">{{ user.email }}</strong>
+        </p>
+      </div>
+
+      <form #nameForm="ngForm" (ngSubmit)="updateName()">
+        <label for="newName">Új profilnév</label>
+
+        <input
+          id="newName"
+          type="text"
+          name="newName"
+          class="form-control"
+          [(ngModel)]="newName"
+          required
+          maxlength="100"
+          autocomplete="name"
+          placeholder="Add meg az új nevedet">
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 mt-3"
+          [disabled]="loading || nameForm.invalid">
+          <i class="bi bi-check2-circle me-2"></i>
+          Név mentése
+        </button>
+      </form>
+    </section>
+
+    <!-- E-mail módosítása -->
+    <section class="profile-card">
+      <div class="card-heading">
+        <i class="bi bi-envelope"></i>
+        <h2>E-mail-cím módosítása</h2>
+      </div>
+
+      <p class="section-description">
+        Add meg azt az e-mail-címet, amelyet a továbbiakban használni szeretnél.
+      </p>
+
+      <form #emailForm="ngForm" (ngSubmit)="updateEmail()">
+        <label for="newEmail">Új e-mail-cím</label>
+
+        <input
+          id="newEmail"
+          type="email"
+          name="newEmail"
+          class="form-control"
+          [(ngModel)]="newEmail"
+          required
+          email
+          maxlength="254"
+          autocomplete="email"
+          placeholder="pelda@email.com">
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 mt-3"
+          [disabled]="loading || emailForm.invalid">
+          <i class="bi bi-envelope-check me-2"></i>
+          E-mail-cím mentése
+        </button>
+      </form>
+    </section>
+
+    <!-- Jelszó módosítása -->
+    <section class="profile-card password-card">
+      <div class="card-heading">
+        <i class="bi bi-shield-lock"></i>
+        <h2>Jelszó módosítása</h2>
+      </div>
+
+      <p class="section-description">
+        A jelszó megváltoztatásához először add meg a jelenlegi jelszavadat.
+      </p>
+
+      <form #passwordForm="ngForm" (ngSubmit)="updatePassword()">
+        <div class="form-field">
+          <label for="currentPassword">Jelenlegi jelszó</label>
+          <input
+            id="currentPassword"
+            type="password"
+            name="currentPassword"
+            class="form-control"
+            [(ngModel)]="currentPassword"
+            required
+            autocomplete="current-password">
+        </div>
+
+        <div class="form-field">
+          <label for="newPassword">Új jelszó</label>
+          <input
+            id="newPassword"
+            type="password"
+            name="newPassword"
+            class="form-control"
+            [(ngModel)]="newPassword"
+            required
+            minlength="8"
+            autocomplete="new-password">
+        </div>
+
+        <div class="form-field">
+          <label for="confirmPassword">Új jelszó megerősítése</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            class="form-control"
+            [(ngModel)]="confirmPassword"
+            required
+            minlength="8"
+            autocomplete="new-password">
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-danger w-100 mt-3"
+          [disabled]="loading || passwordForm.invalid">
+          <i class="bi bi-lock me-2"></i>
+          Jelszó módosítása
+        </button>
+      </form>
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,419 @@
+/* A navigációs sáv alapstílusa */
+.custom-navbar {
+  background: #f8f9fb !important;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.55rem 0;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+/* Udvar felirat */
+.custom-navbar .navbar-brand {
+  color: #253858;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-right: 1.25rem;
+}
+
+.custom-navbar .navbar-brand i {
+  color: #3b82f6;
+  margin-right: 0.3rem;
+}
+
+/* Navigációs hivatkozások */
+.custom-navbar .nav-link {
+  color: #475569;
+  font-size: 0.94rem;
+  border-radius: 7px;
+  padding: 0.55rem 0.7rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link:focus {
+  background: #eaf1ff;
+  color: #1d4ed8;
+}
+
+/* Jobb oldali kereső és felhasználói rész */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.navbar-search {
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.navbar-search .form-control {
+  min-width: 150px;
+  border-color: #d8dee9;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.navbar-search .btn {
+  border-radius: 8px;
+}
+
+/* Felhasználói menü gombja */
+.user-menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  background: transparent;
+  color: #334155;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.user-menu-button:hover,
+.user-menu-button:focus {
+  background: #edf2f7;
+  border-color: #e2e8f0;
+}
+
+/* Kerek profilkép-helyőrző */
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #e8eef8;
+  color: #475569;
+  font-size: 1.2rem;
+}
+
+/* Felhasználónév */
+.user-display-name {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Felhasználói adatok – név és e-mail egymás alatt */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 180px;
+  min-width: 0;
+  line-height: 1.3;
+  text-align: left;
+}
+
+/* Felhasználónév */
+.user-menu-button .user-display-name {
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* E-mail-cím a név alatt */
+.user-menu-button .profile-email {
+  display: block;
+  max-width: 180px;
+  color: #8a94a6;
+  font-size: 0.7rem;
+  font-weight: 400;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Len yíló felhasználói menü */
+.user-dropdown {
+  min-width: 205px;
+  margin-top: 0.5rem !important;
+  padding: 0.45rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.user-dropdown .dropdown-item {
+  padding: 0.65rem 0.75rem;
+  border-radius: 7px;
+  color: #334155;
+}
+
+.user-dropdown .dropdown-item i {
+  width: 1.5rem;
+  color: #64748b;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background: #edf2f7;
+}
+
+.user-dropdown .logout-item,
+.user-dropdown .logout-item i {
+  color: #dc2626;
+}
+
+.user-dropdown .logout-item:hover {
+  background: #fef2f2;
+}
+
+/* Bejelentkezés ikon */
+.login-icon-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.login-icon-button i {
+  font-size: 1.45rem;
+}
+
+.login-icon-button:hover {
+  background: #eaf1ff;
+  color: #1d4ed8;
+}
+
+/* Asztali és mobil megjelenítés */
+.user-menu-mobile {
+  display: none;
+}
+
+.user-menu-desktop {
+  display: flex;
+  align-items: center;
+}
+
+/* Telefon és kisebb képernyő */
+@media (max-width: 991.98px) {
+  .custom-navbar .container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .user-menu-mobile {
+    display: block;
+    order: 2;
+    margin-left: auto;
+    margin-right: 0.65rem;
+  }
+
+  .custom-navbar .navbar-toggler {
+    order: 3;
+  }
+
+  .custom-navbar .navbar-brand {
+    order: 1;
+    margin-right: 0;
+  }
+
+  .custom-navbar .navbar-collapse {
+    order: 4;
+    flex-basis: 100%;
+    width: 100%;
+    margin-top: 0.7rem;
+  }
+
+  .user-menu-desktop {
+    display: none;
+  }
+
+  .navbar-right {
+    margin: 0.8rem 0 0;
+    width: 100%;
+  }
+
+  .navbar-search {
+    width: 100%;
+  }
+
+  .navbar-search .form-control {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .custom-navbar .nav-link {
+    padding: 0.65rem 0.75rem;
+  }
+}
+
+/* Időjáráskártya a navigációs sáv jobb oldalán */
+.weather-navbar-card {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.4rem;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 0.65rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+  color: #334155;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.weather-navbar-trigger {
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.weather-navbar-trigger:hover,
+.weather-navbar-trigger:focus-visible {
+  border-color: #93c5fd;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.16);
+  outline: none;
+}
+
+.weather-navbar-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.weather-navbar-info {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.weather-city {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.weather-description {
+  max-width: 105px;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.weather-temperature {
+  margin-left: 0.25rem;
+  color: #2563eb;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.weather-navbar-status {
+  gap: 0.5rem;
+  padding: 0 0.7rem;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.weather-status-icon {
+  font-size: 1.4rem;
+}
+
+.weather-error {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.weather-retry-button {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: #fee2e2;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
+.weather-retry-button:hover {
+  background: #fecaca;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .weather-navbar-card {
+    order: 1;
+    max-width: 100%;
+  }
+
+  .navbar-search {
+    order: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .user-display-name {
+    max-width: 80px;
+  }
+
+  .user-menu-button {
+    gap: 0.3rem;
+    padding: 0.2rem;
+  }
+
+  .profile-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .weather-navbar-card {
+    height: 44px;
+    min-height: 44px;
+    gap: 0.25rem;
+    padding: 0 0.4rem;
+  }
+
+  .weather-navbar-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .weather-description {
+    max-width: 80px;
+  }
+
+  .weather-temperature {
+    font-size: 0.9rem;
+  }
+}

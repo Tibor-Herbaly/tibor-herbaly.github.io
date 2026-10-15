@@ -1,0 +1,156 @@
+<div class="weather-dialog-backdrop" (click)="close.emit()">
+  <section class="weather-dialog"
+           role="dialog"
+           aria-modal="true"
+           aria-labelledby="weather-dialog-title"
+           (click)="$event.stopPropagation()"
+           (keydown.escape)="close.emit()">
+    <header class="weather-dialog-header">
+      <div>
+        <p class="weather-dialog-eyebrow">OpenWeather előrejelzés</p>
+        <h2 id="weather-dialog-title">{{ weatherDetails?.current?.name ?? city }} időjárása</h2>
+      </div>
+      <button type="button" class="weather-dialog-close"
+              aria-label="Bezárás" (click)="close.emit()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </header>
+
+    <div class="weather-dialog-content">
+      <form class="weather-city-search" role="search" (ngSubmit)="searchWeather()">
+        <label for="weather-city-input">Város keresése</label>
+        <div class="weather-city-search-controls">
+          <input id="weather-city-input" class="form-control" type="search"
+                 name="city" [(ngModel)]="searchCity"
+                 placeholder="Például: London" autocomplete="off">
+          <button class="btn btn-primary" type="submit" [disabled]="detailsLoading || searchLoading">
+            <i class="bi bi-search"></i>
+            Keresés
+          </button>
+        </div>
+        <small class="weather-search-error" *ngIf="searchError">{{ searchError }}</small>
+        <div class="weather-city-results" *ngIf="cityResults.length">
+          <span class="weather-city-results-label">Válassz egy várost:</span>
+          <button type="button" class="weather-city-result"
+                  *ngFor="let result of cityResults"
+                  (click)="selectCity(result)">
+            <span>{{ result.name }}<span *ngIf="result.state">, {{ result.state }}</span></span>
+            <small>{{ result.country }}</small>
+          </button>
+        </div>
+        <div class="weather-city-search-loading" *ngIf="searchLoading">
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          Városok keresése...
+        </div>
+      </form>
+
+      <div class="weather-detail-status" *ngIf="detailsLoading">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        Részletes időjárási adatok betöltése...
+      </div>
+
+      <div class="weather-detail-error" *ngIf="detailsError">
+        <i class="bi bi-cloud-slash"></i>
+        <span>Az időjárási adatok nem tölthetők be. Ellenőrizd a város nevét, majd próbáld újra.</span>
+        <button type="button" class="btn btn-sm btn-outline-primary"
+              (click)="retryWeatherDetails()">Újrapróbálás</button>
+      </div>
+
+      <ng-container *ngIf="weatherDetails as details">
+        <section class="weather-current-details" aria-labelledby="current-weather-title">
+          <div class="weather-current-summary">
+            <img [src]="weatherDetailsIconUrl"
+                 [alt]="details.current.weather[0].description"
+                 width="80" height="80">
+            <div>
+              <h3 id="current-weather-title">{{ details.current.name }}, {{ details.current.sys.country }}</h3>
+              <p>{{ details.current.weather[0].description | titlecase }}</p>
+              <strong>{{ details.current.main.temp | number:'1.0-0' }} °C</strong>
+              <span>Hőérzet: {{ details.current.main.feels_like | number:'1.0-0' }} °C</span>
+              <small class="weather-current-updated">Frissítve: {{ formatWeatherTime(details.current.dt, details.current.timezone) }}</small>
+            </div>
+          </div>
+
+          <div class="weather-metrics">
+            <div class="weather-metric weather-local-date">
+              <span>Helyi dátum</span>
+              <strong>{{ formatWeatherDate(details.current.dt, details.current.timezone) }}</strong>
+            </div>
+            <div class="weather-metric weather-local-time">
+              <span>Helyi idő</span>
+              <strong>{{ formatWeatherClock(details.current.dt, details.current.timezone) }}</strong>
+            </div>
+            <div class="weather-metric weather-sun-time" *ngIf="details.current.sys.sunrise">
+              <span>Napkelte</span>
+              <strong>{{ formatWeatherClock(details.current.sys.sunrise, details.current.timezone) }}</strong>
+            </div>
+            <div class="weather-metric weather-sun-time" *ngIf="details.current.sys.sunset">
+              <span>Napnyugta</span>
+              <strong>{{ formatWeatherClock(details.current.sys.sunset, details.current.timezone) }}</strong>
+            </div>
+            <div class="weather-metric"><span>Minimum / maximum</span><strong>{{ details.current.main.temp_min | number:'1.0-0' }} / {{ details.current.main.temp_max | number:'1.0-0' }} °C</strong></div>
+            <div class="weather-metric"><span>Páratartalom</span><strong>{{ details.current.main.humidity }}%</strong></div>
+            <div class="weather-metric"><span>Légnyomás</span><strong>{{ details.current.main.pressure }} hPa</strong></div>
+            <div class="weather-metric" *ngIf="details.current.main.sea_level != null"><span>Tengerszinti nyomás</span><strong>{{ details.current.main.sea_level }} hPa</strong></div>
+            <div class="weather-metric" *ngIf="details.current.main.grnd_level != null"><span>Felszíni nyomás</span><strong>{{ details.current.main.grnd_level }} hPa</strong></div>
+            <div class="weather-metric"><span>Szélsebesség / irány</span><strong>{{ details.current.wind?.speed ?? 0 }} m/s · {{ details.current.wind?.deg ?? 0 }}°</strong></div>
+            <div class="weather-metric" *ngIf="details.current.wind?.gust != null"><span>Széllökés</span><strong>{{ details.current.wind?.gust }} m/s</strong></div>
+            <div class="weather-metric"><span>Felhőzet</span><strong>{{ details.current.clouds?.all ?? 0 }}%</strong></div>
+            <div class="weather-metric"><span>Látótávolság</span><strong>{{ (details.current.visibility ?? 0) / 1000 | number:'1.0-1' }} km</strong></div>
+            <div class="weather-metric" *ngIf="details.current.coord"><span>Koordináták</span><strong>{{ details.current.coord.lat }}, {{ details.current.coord.lon }}</strong></div>
+          </div>
+        </section>
+
+        <section class="weather-forecast-section" aria-labelledby="daily-forecast-title">
+          <h3 id="daily-forecast-title">5 napos előrejelzés</h3>
+          <div class="weather-daily-forecast">
+            <article class="weather-day-card" *ngFor="let day of dailyForecasts">
+              <h4>{{ day.label }}</h4>
+              <img [src]="weatherIconUrlFor(day.condition.icon)"
+                   [alt]="day.condition.description" width="48" height="48">
+              <span>{{ day.condition.description | titlecase }}</span>
+              <strong>{{ day.max | number:'1.0-0' }}° / {{ day.min | number:'1.0-0' }}°</strong>
+              <small>Csapadék: {{ day.precipitationChance | percent:'1.0-0' }}</small>
+            </article>
+          </div>
+        </section>
+
+        <section class="weather-forecast-section" aria-labelledby="three-hour-forecast-title">
+          <h3 id="three-hour-forecast-title">3 óránkénti előrejelzés</h3>
+          <div class="weather-forecast-table-wrap">
+            <table class="weather-forecast-table">
+              <thead>
+                <tr>
+                  <th>Időpont</th><th>Időjárás</th><th>Hőmérséklet</th>
+                  <th>Hőérzet / min–max</th><th>Páratartalom</th><th>Nyomás</th>
+                  <th>Szél</th><th>Felhőzet</th><th>Látótávolság</th>
+                  <th>Csapadék esélye</th><th>Csapadék (3 óra)</th><th>Nappal / éjjel</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of details.forecast.list">
+                  <td>{{ formatWeatherTime(item.dt, details.forecast.city.timezone) }}</td>
+                  <td class="weather-forecast-condition">
+                    <img [src]="weatherIconUrlFor(item.weather[0].icon)"
+                         [alt]="item.weather[0].description" width="40" height="40">
+                    {{ item.weather[0].description | titlecase }}
+                  </td>
+                  <td>{{ item.main.temp | number:'1.0-0' }} °C</td>
+                  <td>{{ item.main.feels_like | number:'1.0-0' }} °C · {{ item.main.temp_min | number:'1.0-0' }}–{{ item.main.temp_max | number:'1.0-0' }} °C</td>
+                  <td>{{ item.main.humidity }}%</td>
+                  <td>{{ item.main.pressure }} hPa<span *ngIf="item.main.sea_level != null"> · tengerszint {{ item.main.sea_level }}</span><span *ngIf="item.main.grnd_level != null"> · felszín {{ item.main.grnd_level }}</span><span *ngIf="item.main.temp_kf != null"> · korrekció {{ item.main.temp_kf | number:'1.1-1' }}°</span></td>
+                  <td>{{ item.wind?.speed ?? 0 }} m/s · {{ item.wind?.deg ?? 0 }}°<span *ngIf="item.wind?.gust != null"> · széllökés {{ item.wind?.gust }} m/s</span></td>
+                  <td>{{ item.clouds?.all ?? 0 }}%</td>
+                  <td>{{ (item.visibility ?? 0) / 1000 | number:'1.0-1' }} km</td>
+                  <td>{{ item.pop | percent:'1.0-0' }}</td>
+                  <td>{{ item.rain?.['3h'] ?? 0 }} mm eső · {{ item.snow?.['3h'] ?? 0 }} mm hó</td>
+                  <td>{{ item.sys?.pod === 'd' ? 'Nappal' : item.sys?.pod === 'n' ? 'Éjjel' : '—' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </ng-container>
+    </div>
+  </section>
+</div>
