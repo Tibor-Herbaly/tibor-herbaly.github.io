@@ -20,4 +20,5 @@ export class DonationService {
   getDonationsSummary(): Observable<DonationSummary> {
     return this.http.get<DonationSummary>(this.apiUrl);
   }
+
 }

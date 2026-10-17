@@ -1,0 +1,192 @@
+<main class="admin-container">
+  <section *ngIf="!authenticated" class="admin-card login-card" aria-labelledby="admin-title">
+    <h1 id="admin-title">Tibber adminisztráció</h1>
+    <p class="notice">Ide csak az oldal üzemeltetője léphet be!</p>
+
+    <p *ngIf="!sessionReady" role="status">Ellenőrzés...</p>
+
+    <form *ngIf="sessionReady && !authenticated && step === 1" (ngSubmit)="verifyFirstStep()">
+      <label for="admin-name">Név</label>
+      <input
+        id="admin-name"
+        name="name"
+        type="text"
+        [(ngModel)]="name"
+        autocomplete="username"
+        required>
+
+      <label for="first-password">1. jelszó</label>
+      <input
+        id="first-password"
+        name="firstPassword"
+        type="password"
+        [(ngModel)]="firstPassword"
+        autocomplete="current-password"
+        required>
+
+      <button type="submit" [disabled]="submitting">Tovább</button>
+    </form>
+
+    <form *ngIf="sessionReady && !authenticated && step === 2" (ngSubmit)="verifySecondStep()">
+      <label for="second-password">2. jelszó</label>
+      <input
+        id="second-password"
+        name="secondPassword"
+        type="password"
+        [(ngModel)]="secondPassword"
+        autocomplete="current-password"
+        required>
+
+      <button type="submit" [disabled]="submitting">Belépés</button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
+  </section>
+
+  <section *ngIf="sessionReady && authenticated && !activeSection" class="admin-card section-menu"
+           aria-labelledby="sections-title">
+    <h1 id="sections-title">Tibber adminisztráció</h1>
+    <p>Válassza ki a megnyitni kívánt felületet. Minden kártyához külön jelszó szükséges.</p>
+
+    <div class="section-tiles" aria-label="Védett adminisztrációs felületek">
+      <button type="button" class="section-tile" (click)="selectSection('tibber-admin')">
+        <strong>Tibber adminisztráció</strong>
+        <span>Megnyitás jelszóval</span>
+      </button>
+      <button type="button" class="section-tile" (click)="selectSection('donations')">
+        <strong>Adományok</strong>
+        <span>Lekérdezés jelszóval</span>
+      </button>
+      <button type="button" class="section-tile" (click)="selectSection('users')">
+        <strong>Felhasználók</strong>
+        <span>Lekérdezés jelszóval</span>
+      </button>
+    </div>
+
+    <form *ngIf="selectedSection" (ngSubmit)="verifySectionPassword()">
+      <label for="section-password">A kiválasztott felület jelszava</label>
+      <input
+        id="section-password"
+        name="sectionPassword"
+        type="password"
+        [(ngModel)]="sectionPassword"
+        autocomplete="current-password"
+        required>
+      <button type="submit" [disabled]="submitting">Megnyitás</button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
+    <button type="button" (click)="logout()" [disabled]="submitting">Kijelentkezés</button>
+  </section>
+
+  <div *ngIf="sessionReady && authenticated && activeSection" class="admin-dashboard">
+    <div class="section-toolbar">
+      <button type="button" (click)="returnToSections()" [disabled]="submitting">
+        Vissza a kártyákhoz
+      </button>
+      <button type="button" (click)="logout()" [disabled]="submitting">Kijelentkezés</button>
+    </div>
+
+    <section *ngIf="activeSection === 'tibber-admin'" class="admin-card"
+             aria-labelledby="admin-title">
+      <h1 id="admin-title">Tibber adminisztráció</h1>
+      <h2>Üdvözöljük Tibber !</h2>
+      <form (ngSubmit)="publishAnnouncement()">
+        <label for="announcement">Információ a felhasználóknak</label>
+        <textarea
+          id="announcement"
+          name="announcement"
+          rows="8"
+          maxlength="10000"
+          [(ngModel)]="announcement"
+          (ngModelChange)="announcementSaved = false"
+          [disabled]="announcementLoading || submitting"
+          placeholder="Írja be a felhasználóknak szóló információt..."></textarea>
+        <p *ngIf="announcementLoading" role="status">A mentett információ betöltése...</p>
+        <p *ngIf="announcementSaved" class="success" role="status">Az információ publikálva lett.</p>
+        <button type="submit" [disabled]="submitting || announcementLoading">Publikálás</button>
+      </form>
+      <p *ngIf="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
+    </section>
+
+    <section *ngIf="activeSection === 'donations'" class="admin-card donation-card"
+             aria-labelledby="donations-title">
+      <div class="donations-heading">
+        <div>
+          <h1 id="donations-title">Adományok</h1>
+          <p class="donation-total">Összesen: <strong>{{ donations.total | number }} Ft</strong></p>
+        </div>
+        <button type="button" (click)="loadDonations()" [disabled]="donationsLoading">
+          {{ donationsLoading ? 'Betöltés...' : 'Frissítés' }}
+        </button>
+      </div>
+
+      <p *ngIf="donationsLoading" role="status">Az adományok betöltése...</p>
+      <p *ngIf="donationsError" class="error" role="alert">{{ donationsError }}</p>
+      <div *ngIf="!donationsLoading && !donationsError" class="donations-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Donor</th>
+              <th scope="col">Összeg</th>
+              <th scope="col">Dátum, idő</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let donation of donations.donations">
+              <td>{{ donation.donorName }}</td>
+              <td>{{ donation.amount | number }} Ft</td>
+              <td>{{ donation.date }}</td>
+            </tr>
+            <tr *ngIf="donations.donations.length === 0">
+              <td colspan="3">Még nincs rögzített adomány.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section *ngIf="activeSection === 'users'" class="admin-card users-card"
+             aria-labelledby="users-title">
+      <div class="donations-heading">
+        <div>
+          <h1 id="users-title">Felhasználók</h1>
+          <p class="donation-total">Regisztrált felhasználók: <strong>{{ users.length }}</strong></p>
+        </div>
+        <button type="button" (click)="loadUsers()" [disabled]="usersLoading">
+          {{ usersLoading ? 'Betöltés...' : 'Frissítés' }}
+        </button>
+      </div>
+
+      <p *ngIf="usersLoading" role="status">A felhasználók betöltése...</p>
+      <p *ngIf="usersError" class="error" role="alert">{{ usersError }}</p>
+      <div *ngIf="!usersLoading && !usersError" class="donations-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Azonosító</th>
+              <th scope="col">Név</th>
+              <th scope="col">E-mail-cím</th>
+              <th scope="col">Időjárás városa</th>
+              <th scope="col">E-mail látható</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.preferredWeatherCity || 'Alapértelmezett (Budapest)' }}</td>
+              <td>{{ user.showEmailInNavbar ? 'Igen' : 'Nem' }}</td>
+            </tr>
+            <tr *ngIf="users.length === 0">
+              <td colspan="5">Nincs regisztrált felhasználó.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <p *ngIf="errorMessage" class="error section-error" role="alert">{{ errorMessage }}</p>
+  </div>
+</main>

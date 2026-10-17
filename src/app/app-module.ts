@@ -13,7 +13,6 @@ import { MemoryGameComponent } from './components/games/memory-game.component/me
 import { NumberTippGameComponent } from './components/games/number-tipp-game.component/number-tipp-game.component';
 import { WritingsComponent } from './components/others/writings.component/writings.component';
 import { PicturesComponent } from './components/others/pictures.component/pictures.component';
-import { GiftComponent } from './components/others/gift.component/gift.component';
 import { VideosComponent } from './components/videos/videos.component/videos.component';
 import { ArmoryVideoComponent } from './components/videos/armory-video.component/armory-video.component';
 import { HomeComponent } from './components/home.component/home.component';
@@ -30,6 +29,9 @@ import { Profile } from './components/profile/profile';
 import { SpaceScienceComponent } from './components/space-science.component/space-science.component';
 import { NewsComponent } from './components/news.component/news.component';
 import { WeatherDetailsComponent } from './components/weather-details.component/weather-details.component';
+import { SettingsComponent } from './components/settings.component/settings.component';
+import { AdminTibberComponent } from './components/others/admin-tibber.component/admin-tibber.component';
+import { AndroidAppComponent } from './components/android-app.component/android-app.component';
 
 
 @NgModule({
@@ -37,13 +39,13 @@ import { WeatherDetailsComponent } from './components/weather-details.component/
     App,
     Navbar,
     WeatherDetailsComponent,
+    SettingsComponent,
     BigThrowComponent,
     DiceTippComponent,
     MemoryGameComponent,
     NumberTippGameComponent,
     WritingsComponent,
     PicturesComponent,
-    GiftComponent,
     VideosComponent,
     ArmoryVideoComponent,
     HomeComponent,
@@ -55,7 +57,9 @@ import { WeatherDetailsComponent } from './components/weather-details.component/
     MusicComponent,
     LoginOutDeleteComponent,
     RegisterComponent,
-    Profile
+    Profile,
+    AdminTibberComponent,
+    AndroidAppComponent
   ],
   imports: [
     BrowserModule,

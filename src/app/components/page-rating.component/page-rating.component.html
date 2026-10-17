@@ -2,8 +2,6 @@
   <div class="card-body text-center">
     <h5 class="card-title">{{ page.title }}</h5>
 
-    <p>(Jelenleg nem működik !)</p>
-
     <p class="card-text">
       Átlagos értékelés:
       <span class="badge bg-primary">{{ page.averageRating | number:'1.1-1' }}</span>
@@ -21,7 +19,29 @@
       </select>
     </div>
 
-    <button class="btn btn-success" (click)="ratePage()">Küldés</button>
+    <button class="btn btn-success" type="button" (click)="ratePage()" [disabled]="submitting">
+      {{ submitting ? 'Küldés...' : 'Küldés' }}
+    </button>
+    <p *ngIf="ratingError" class="text-danger mt-2" role="alert">{{ ratingError }}</p>
   </div>
 </div>
 <hr>
+
+<div *ngIf="showLoginPrompt" class="login-prompt-backdrop" (click)="closeLoginPrompt()">
+  <section
+    class="login-prompt"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="login-prompt-title"
+    (click)="$event.stopPropagation()">
+    <button class="login-prompt-close" type="button" aria-label="Bezárás" (click)="closeLoginPrompt()">
+      &times;
+    </button>
+    <h2 id="login-prompt-title">Bejelentkezés szükséges</h2>
+    <p>Az oldal értékeléséhez be kell jelentkezned, vagy regisztrálj!</p>
+    <div class="login-prompt-actions">
+      <a class="btn btn-primary" routerLink="/login-out-delete">Bejelentkezés</a>
+      <a class="btn btn-outline-primary" routerLink="/register">Regisztráció</a>
+    </div>
+  </section>
+</div>

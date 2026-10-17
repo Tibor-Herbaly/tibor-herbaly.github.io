@@ -1,0 +1,140 @@
+<main class="settings-page">
+  <header class="settings-header">
+    <span class="settings-avatar"><i class="bi bi-gear"></i></span>
+    <div>
+      <h1>Beállítások</h1>
+      <p>Személyre szabhatod az időjáráskártyádat.</p>
+    </div>
+  </header>
+
+  <p *ngIf="loading" class="settings-status" role="status">
+    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+    Beállítások betöltése...
+  </p>
+
+  <div *ngIf="successMessage" class="alert alert-success" role="status">
+    <i class="bi bi-check-circle me-2"></i>{{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-circle me-2"></i>{{ errorMessage }}
+  </div>
+
+  <section class="settings-card account-settings-card">
+    <div class="settings-card-heading">
+      <span class="settings-card-icon"><i class="bi bi-person-vcard"></i></span>
+      <div>
+        <h2>Adataim megváltoztatása</h2>
+        <p>A nevedet, e-mail-címedet és jelszavadat a Profilom oldalon módosíthatod.</p>
+      </div>
+    </div>
+    <a class="btn btn-primary profile-settings-link" routerLink="/profile">
+      <i class="bi bi-person-circle me-2"></i>
+      Profilom megnyitása
+    </a>
+  </section>
+
+  <section class="settings-card account-settings-card" *ngIf="!loading && user">
+    <div class="settings-card-heading">
+      <span class="settings-card-icon"><i class="bi bi-envelope"></i></span>
+      <div>
+        <h2>E-mail-cím megjelenítése</h2>
+        <p>Beállíthatod, hogy az e-mail-címed látható legyen-e a navigációs sávban.</p>
+      </div>
+    </div>
+    <label class="form-check form-switch email-visibility-setting">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="show-email-in-navbar"
+        [(ngModel)]="showEmailInNavbar"
+        [disabled]="saving">
+      <span class="form-check-label" for="show-email-in-navbar">
+        E-mail-cím megjelenítése a navigációs sávban
+      </span>
+    </label>
+    <button
+      type="button"
+      class="btn btn-primary save-city"
+      [disabled]="saving"
+      (click)="saveEmailVisibility()">
+      <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true"></span>
+      <i *ngIf="!saving" class="bi bi-check2-circle me-2"></i>
+      Beállítás mentése
+    </button>
+  </section>
+
+  <section class="settings-card" *ngIf="!loading && user">
+    <div class="settings-card-heading">
+      <span class="settings-card-icon"><i class="bi bi-cloud-sun"></i></span>
+      <div>
+        <h2>Időjárás a navigációs sávban</h2>
+        <p>Keress rá egy városra, majd válaszd ki a találatok közül.</p>
+      </div>
+    </div>
+
+    <div class="current-city" *ngIf="user.preferredWeatherCity">
+      <span>Jelenleg kiválasztva</span>
+      <strong>{{ user.preferredWeatherCity }}</strong>
+    </div>
+    <div class="current-city" *ngIf="!user.preferredWeatherCity">
+      <span>Jelenleg kiválasztva</span>
+      <strong>Budapest (alapértelmezett)</strong>
+    </div>
+
+    <form class="city-search" (ngSubmit)="searchCities()">
+      <label for="settings-city">Város keresése</label>
+      <div class="city-search-controls">
+        <input
+          id="settings-city"
+          class="form-control"
+          type="search"
+          name="cityQuery"
+          [(ngModel)]="cityQuery"
+          (input)="selectedCity = null"
+          placeholder="Például: Budapest"
+          autocomplete="off">
+        <button class="btn btn-primary" type="submit" [disabled]="searching">
+          <span *ngIf="searching" class="spinner-border spinner-border-sm me-1"
+                aria-hidden="true"></span>
+          <i *ngIf="!searching" class="bi bi-search me-1"></i>
+          Keresés
+        </button>
+      </div>
+    </form>
+
+    <div class="city-results" *ngIf="cityResults.length">
+      <span class="city-results-label">Válassz egy várost:</span>
+      <button
+        *ngFor="let city of cityResults"
+        type="button"
+        class="city-result"
+        [class.city-result-selected]="selectedCity === city"
+        (click)="selectCity(city)">
+        <span>
+          <strong>{{ city.name }}</strong>
+          <small *ngIf="city.state">{{ city.state }}</small>
+        </span>
+        <span class="city-result-country">{{ city.country }}</span>
+      </button>
+    </div>
+
+    <div class="selected-city" *ngIf="selectedCity">
+      <span>Kiválasztott város</span>
+      <strong>{{ cityLabel(selectedCity) }}</strong>
+    </div>
+
+    <button
+      *ngIf="selectedCity"
+      type="button"
+      class="btn btn-primary save-city"
+      [disabled]="saving"
+      (click)="saveCity()">
+      <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"
+            aria-hidden="true"></span>
+      <i *ngIf="!saving" class="bi bi-check2-circle me-2"></i>
+      Város mentése
+    </button>
+  </section>
+</main>

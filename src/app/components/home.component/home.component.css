@@ -15,3 +15,6 @@
   pointer-events: none; /* hogy ne akadályozza a kattintásokat */
 }
 
+.home-announcement {
+  white-space: pre-wrap;
+}

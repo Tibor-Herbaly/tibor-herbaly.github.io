@@ -17,6 +17,7 @@ export class Navbar implements OnInit {
   isLoggedIn = false;
   userName = '';
   userEmail = '';
+  showEmailInNavbar = true;
 
   // ===== IDŐJÁRÁS =====
   weather: WeatherResponse | null = null;
@@ -24,6 +25,7 @@ export class Navbar implements OnInit {
   weatherLoading = false;
   weatherError = false;
   weatherDetailsOpen = false;
+  private weatherRequestId = 0;
 
   constructor(
     private authService: AuthService,
@@ -39,6 +41,12 @@ export class Navbar implements OnInit {
       this.isLoggedIn = !!user;
       this.userName = user?.name || '';
       this.userEmail = user?.email || '';
+      this.showEmailInNavbar = user?.showEmailInNavbar !== false;
+      const preferredCity = user?.preferredWeatherCity?.trim() || 'Budapest';
+      if (preferredCity !== this.weatherCity) {
+        this.weatherCity = preferredCity;
+        this.loadWeather();
+      }
     });
 
     // A szerver ellenőrzi a tényleges bejelentkezést.
@@ -57,15 +65,22 @@ export class Navbar implements OnInit {
 
   // ===== IDŐJÁRÁS LEKÉRÉSE =====
   loadWeather(): void {
+    const requestId = ++this.weatherRequestId;
     this.weatherLoading = true;
     this.weatherError = false;
 
     this.weatherService.getCurrentWeather(this.weatherCity).subscribe({
       next: response => {
+        if (requestId !== this.weatherRequestId) {
+          return;
+        }
         this.weather = response;
         this.weatherLoading = false;
       },
       error: err => {
+        if (requestId !== this.weatherRequestId) {
+          return;
+        }
         console.error('Időjárás-lekérési hiba:', err);
         this.weather = null;
         this.weatherError = true;

@@ -17,7 +17,11 @@ export class PageService {
   }
 
   ratePage(id: number, value: number): Observable<PageModel> {
-    return this.http.post<PageModel>(`${this.apiUrl}/${id}/rate?value=${value}`, {});
+    return this.http.post<PageModel>(
+      `${this.apiUrl}/${id}/rate?value=${value}`,
+      {},
+      { withCredentials: true }
+    );
   }
 
 

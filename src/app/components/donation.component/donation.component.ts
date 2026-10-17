@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DonationSummary} from '../../models/donation-response';
 import {DonationService} from '../../services/donation.service';
 import {DonationRequestModel} from '../../models/donation-request';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-donation.component',
@@ -16,10 +17,16 @@ export class DonationComponent implements OnInit {
   summary: DonationSummary = { total: 0, donations: [] };
   loading = false;
 
-  constructor(private donationService: DonationService) {}
+  constructor(
+    private donationService: DonationService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadDonations();
+    this.authService.currentUser$.subscribe(user => {
+      this.name = user?.name ?? '';
+    });
   }
 
   loadDonations(): void {
@@ -61,4 +68,3 @@ export class DonationComponent implements OnInit {
     });
   }
 }
-

@@ -1,5 +1,11 @@
+<app-ford-promotion></app-ford-promotion>
+
 <div class="container mt-3">
   <h1> Üdvözöllek az oldalamon !</h1>
+  <p *ngIf="announcement" class="home-announcement">{{ announcement }}</p>
+  <p *ngIf="announcementLoadFailed" role="status">
+    A felhasználóknak szóló információ jelenleg nem tölthető be.
+  </p>
   <p>Lelj meg a faceBook -on ! <br>
     ( Kattints a képre ! )</p>
   <div>

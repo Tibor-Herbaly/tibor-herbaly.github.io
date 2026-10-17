@@ -18,16 +18,21 @@ import {LoginOutDeleteComponent} from './components/login-out-delete.component/l
 import {Profile} from './components/profile/profile';
 import {SpaceScienceComponent} from './components/space-science.component/space-science.component';
 import {NewsComponent} from './components/news.component/news.component';
+import {SettingsComponent} from './components/settings.component/settings.component';
+import {WeatherDetailsComponent} from './components/weather-details.component/weather-details.component';
+import {AdminTibberComponent} from './components/others/admin-tibber.component/admin-tibber.component';
+import {AndroidAppComponent} from './components/android-app.component/android-app.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  {path: 'home', component: HomeComponent},
+  { path: 'home', component: HomeComponent},
   //Be/logout, register, delete user
   { path: 'register', component: RegisterComponent }, // Ez nincs bekötve a Navbar -ba.
   { path: 'login-out-delete', component: LoginOutDeleteComponent },
-  // { path: 'android-app', component: AndroidAppComponent },
+  { path: 'android-app', component: AndroidAppComponent },
   { path: 'armory-video', component: ArmoryVideoComponent },
   { path: 'profile', component: Profile },
+  { path: 'settings', component: SettingsComponent },
   // Games
   { path: 'game1', component: NumberTippGameComponent},
   { path: 'dice-tipp2', component: DiceTippComponent },
@@ -44,8 +49,8 @@ const routes: Routes = [
   // Hírek – kategóriaválasztó és kategóriaoldalak
   { path: 'news/:category', component: NewsComponent },
   { path: 'news', component: NewsComponent },
-  // { path: 'settings', component: SettingsComponent },
-  // { path: 'weather', component: WeatherDetailsComponent },
+  { path: 'weather', component: WeatherDetailsComponent },
+  { path: 'admin-tibber', component: AdminTibberComponent }
 ];
 
 @NgModule({

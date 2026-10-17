@@ -6,6 +6,14 @@ import {LoginResponseModel} from '../models/register-login/login-response.model'
 import {RegistrationRequestModel} from '../models/register-login/registration-request.model';
 import { BehaviorSubject } from 'rxjs';
 
+export interface CurrentUser {
+  id: number;
+  name: string;
+  email: string;
+  preferredWeatherCity?: string | null;
+  showEmailInNavbar?: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,8 +45,24 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/verify`, payload, { responseType: 'text' });
   }
 
-  getCurrentUser(): Observable<{id:number, name:string, email:string}> {
-    return this.http.get<{id:number, name:string, email:string}>(`${this.apiUrl}/me`, { withCredentials: true });
+  getCurrentUser(): Observable<CurrentUser> {
+    return this.http.get<CurrentUser>(`${this.apiUrl}/me`, { withCredentials: true });
+  }
+
+  updatePreferredWeatherCity(city: string): Observable<CurrentUser> {
+    return this.http.put<CurrentUser>(
+      `${this.apiUrl}/settings/weather-city`,
+      { city },
+      { withCredentials: true }
+    );
+  }
+
+  updateShowEmailInNavbar(showEmailInNavbar: boolean): Observable<CurrentUser> {
+    return this.http.put<CurrentUser>(
+      `${this.apiUrl}/settings/navbar-email`,
+      { showEmailInNavbar },
+      { withCredentials: true }
+    );
   }
 
   logout(): Observable<void> {
@@ -133,11 +157,7 @@ export class AuthService {
 
   // Profilnév módosítása
   updateProfileName(name: string) {
-    return this.http.put<{
-      id: number;
-      name: string;
-      email: string;
-    }>(
+    return this.http.put<CurrentUser>(
       `${this.apiUrl}/profile/name`,
       { name },
       { withCredentials: true }
@@ -146,11 +166,7 @@ export class AuthService {
 
   // E-mail-cím módosítása
   updateProfileEmail(newEmail: string) {
-    return this.http.put<{
-      id: number;
-      name: string;
-      email: string;
-    }>(
+    return this.http.put<CurrentUser>(
       `${this.apiUrl}/profile/email`,
       { newEmail },
       { withCredentials: true }
