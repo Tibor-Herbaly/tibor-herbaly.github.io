@@ -32,6 +32,7 @@ import { WeatherDetailsComponent } from './components/weather-details.component/
 import { SettingsComponent } from './components/settings.component/settings.component';
 import { AdminTibberComponent } from './components/others/admin-tibber.component/admin-tibber.component';
 import { AndroidAppComponent } from './components/android-app.component/android-app.component';
+import { BlackjackComponent } from './components/games/blackjack.component/blackjack.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { AndroidAppComponent } from './components/android-app.component/android-
     RegisterComponent,
     Profile,
     AdminTibberComponent,
-    AndroidAppComponent
+    AndroidAppComponent,
+    BlackjackComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,94 @@
+/* Kis kártya stílusok */
+
+.container.blackjack {
+  padding: 12px;
+}
+
+.panel {
+  border-radius: 8px;
+}
+
+.balance {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.bet-display {
+  font-size: 1.2rem;
+}
+
+.cards {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.card-small {
+  width: 46px;
+  height: 62px;
+  border-radius: 6px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.card-small .rank {
+  font-size: 14px;
+}
+
+.card-small .suit {
+  font-size: 14px;
+}
+
+.score {
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.controls {
+  margin-top: 12px;
+}
+
+.chat {
+  height: 160px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.msg {
+  padding: 6px 4px;
+  border-bottom: 1px dashed #eee;
+  font-size: 0.9rem;
+}
+
+/* piros lesz a szív és kőr */
+.card-small.suit {
+  color: black;
+}
+
+.card-small.red {
+  color: red;
+}
+
+.red-suit {
+  color: red;
+}
+
+/* egyszerű responsive */
+@media (max-width: 700px) {
+  .cards {
+    gap: 4px;
+  }
+
+  .card-small {
+    width: 40px;
+    height: 56px;
+  }
+}

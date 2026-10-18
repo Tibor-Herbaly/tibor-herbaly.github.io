@@ -1,0 +1,86 @@
+
+<div class="container blackjack">
+  <div class="row">
+    <div class="col-4">
+      <div class="card panel">
+        <div class="card-body">
+          <h5>💰 Egyenleg</h5>
+          <div class="balance">{{ balance }} €</div>
+
+          <h6 class="mt-3">Tét</h6>
+          <div class="bet-display">{{ currentBet }} €</div>
+
+          <div class="bet-buttons mt-2">
+            <button class="btn btn-sm btn-primary me-1" (click)="addBet(10)" [disabled]="betLocked || roundInProgress">10€</button>
+            <button class="btn btn-sm btn-primary me-1" (click)="addBet(50)" [disabled]="betLocked || roundInProgress">50€</button>
+            <button class="btn btn-sm btn-primary me-1" (click)="addBet(100)" [disabled]="betLocked || roundInProgress">100€</button>
+            <button class="btn btn-sm btn-warning me-1" (click)="cancelBet()" [disabled]="betLocked || roundInProgress">Mégse</button>
+            <button class="btn btn-sm btn-success" (click)="onPlaceBet()" [disabled]="betLocked || roundInProgress || currentBet <= 0">Tét fogadása</button>
+          </div>
+
+          <div class="mt-3 small text-muted">Kis kártyák: a kártyák alul láthatók.</div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <div class="card panel">
+          <div class="card-body">
+            <h6>Szabályok (röviden)</h6>
+            <ul class="small">
+              <li>Blackjack 3:2</li>
+              <li>Dealer 17+-ig húz</li>
+              <li>Döntetlen esetén tét vissza</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-8">
+      <div class="table">
+        <div class="row mb-3">
+          <div class="col-12">
+            <h6>Kereskedő</h6>
+            <div class="cards">
+              <div class="card-small" *ngFor="let c of dealerCards">
+                <div class="rank">{{ c.rank }}</div>
+                <div class="suit" [ngClass]="{'red-suit': c.suit === '♥' || c.suit === '♦'}">
+                  {{ c.suit }}
+                </div>
+              </div>
+            </div>
+            <div class="score">Össz: {{ roundInProgress ? (isBlackjack(dealerCards) ? 'BJ' : (playerStand ? score(dealerCards) : '?')) : score(dealerCards) }}</div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <h6>Játékos</h6>
+            <div class="cards">
+              <div class="card-small" *ngFor="let c of playerCards">
+                <div class="rank">{{ c.rank }}</div>
+                <div class="suit" [ngClass]="{'red-suit': c.suit === '♥' || c.suit === '♦'}">
+                  {{ c.suit }}
+                </div>
+              </div>
+            </div>
+            <div class="score">Össz: {{ score(playerCards) }}</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-primary me-1" (click)="hit()" [disabled]="!roundInProgress || playerStand">Lapot</button>
+          <button class="btn btn-secondary me-1" (click)="stand()" [disabled]="!roundInProgress">Állj !</button>
+          <button class="btn btn-outline-dark" (click)="startRound()" [disabled]="roundInProgress || !betLocked">Új osztás (ha tét van)</button>
+        </div>
+
+      </div>
+
+
+      <div #chatBox class="chat mt-3">
+        <div *ngFor="let m of messages" class="msg">{{ m.text }}</div>
+      </div>
+
+    </div>
+  </div>
+</div>
