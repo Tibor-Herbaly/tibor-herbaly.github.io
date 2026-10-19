@@ -88,12 +88,19 @@ export class DiceTippComponent implements AfterViewChecked {
     this.pont2 += pontKor2;
 
     this.uzenetek.push({
-      szoveg: `Dobás: ${this.utolsoDobas} → ${this.jatekosNev1}: +${pontKor1}, Számítógép: +${pontKor2}`,
+      szoveg: `Dobás: ${this.utolsoDobas}`,
+      szin: 'text-black fw-bold'
+    });
+
+    await this.delay(1500);
+
+    this.uzenetek.push({
+      szoveg: `${this.aktualisKor}. kör eredménye: ${this.jatekosNev1} +${pontKor1} pont, ${this.jatekosNev2} +${pontKor2} pont.`,
       szin: 'text-black fw-bold'
     });
 
     this.uzenetek.push({
-      szoveg: `Állás: ${this.jatekosNev1}: ${this.pont1} pont | Számítógép: ${this.pont2} pont`,
+      szoveg: `${this.aktualisKor}. kör után – aktuális összesített állás: ${this.jatekosNev1}: ${this.pont1} pont, ${this.jatekosNev2}: ${this.pont2} pont.`,
       szin: 'text-black fw-bold'
     });
 

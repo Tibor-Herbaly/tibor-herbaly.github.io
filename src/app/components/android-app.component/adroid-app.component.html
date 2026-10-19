@@ -1,7 +1,254 @@
-<main class="android-app-page">
-  <div class="android-app-grid">
-    <section class="android-app-card" *ngFor="let card of cards">
-      <h2>{{ card }}</h2>
+
+<div class="android-apps-page container py-4 py-lg-5">
+
+  <section class="apps-hero mb-4 mb-lg-5">
+    <div class="hero-icon">📱</div>
+
+    <p class="hero-eyebrow">HERKRAZ · ANDROID</p>
+
+    <h1>Android-alkalmazásaim</h1>
+
+    <p class="hero-description">
+      Fedezd fel saját fejlesztésű alkalmazásaimat,
+      és töltsd le őket közvetlenül a telefonodra!
+    </p>
+
+    <div class="hero-info">
+      <span>📦 APK-letöltések</span>
+      <span>🛠️ Saját fejlesztések</span>
+      <span>🆓 Ingyenes letöltés</span>
+    </div>
+  </section>
+
+  <section class="apps-toolbar mb-4">
+
+    <div class="search-wrapper">
+      <label for="appSearch" class="form-label">
+        Alkalmazás keresése
+      </label>
+
+      <input
+        id="appSearch"
+        type="search"
+        class="form-control"
+        placeholder="Név, leírás vagy kategória..."
+        [(ngModel)]="searchText">
+    </div>
+
+    <div class="category-wrapper">
+      <label for="appCategory" class="form-label">
+        Kategória
+      </label>
+
+      <select
+        id="appCategory"
+        class="form-select"
+        [(ngModel)]="selectedCategory">
+
+        <option
+          *ngFor="let category of categories"
+          [value]="category">
+          {{ category }}
+        </option>
+
+      </select>
+    </div>
+
+  </section>
+
+  <div class="results-heading mb-3">
+    <h2>Elérhető alkalmazások</h2>
+
+    <span class="results-count">
+      {{ filteredApps.length }} alkalmazás
+    </span>
+  </div>
+
+  <div class="row g-4" *ngIf="filteredApps.length > 0">
+
+    <div
+      class="col-12 col-md-6 col-xl-4"
+      *ngFor="let app of filteredApps; trackBy: trackByName">
+
+      <article class="app-card h-100">
+
+        <div class="app-card-header">
+          <div class="app-icon" aria-hidden="true">
+            {{ app.icon }}
+          </div>
+
+          <span class="app-category">
+            {{ app.category }}
+          </span>
+        </div>
+
+        <div class="app-card-body">
+
+          <h3>{{ app.name }}</h3>
+
+          <p class="app-description">
+            {{ app.description }}
+          </p>
+
+          <div class="app-version">
+            <span>Android-alkalmazás</span>
+            <span>v{{ app.version }}</span>
+          </div>
+
+          <ul class="feature-list">
+            <li *ngFor="let feature of app.features">
+              <span class="feature-check">✓</span>
+              {{ feature }}
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="app-card-footer">
+
+          <button
+            *ngIf="app.downloadUrl"
+            type="button"
+            class="btn btn-download"
+            (click)="requestDownload(app)">
+
+            <span aria-hidden="true">⬇</span>
+            APK letöltése
+
+          </button>
+
+          <button
+            *ngIf="!app.downloadUrl"
+            type="button"
+            class="btn btn-unavailable"
+            disabled>
+
+            Hamarosan elérhető
+
+          </button>
+
+          <p class="download-note">
+            APK-fájl · Android-telefonra
+          </p>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="filteredApps.length === 0">
+
+    <div class="empty-icon">🔎</div>
+
+    <h3>Nem található alkalmazás</h3>
+
+    <p>
+      Próbálj más keresőkifejezést vagy kategóriát választani.
+    </p>
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="searchText = ''; selectedCategory = 'Mindegyik'">
+
+      Szűrők törlése
+
+    </button>
+
+  </div>
+
+  <section class="installation-info mt-5">
+    <div class="installation-icon">💡</div>
+
+    <div>
+      <h2>Hogyan telepítheted?</h2>
+
+      <ol>
+        <li>Töltsd le az APK-fájlt a telefonodra.</li>
+        <li>Nyisd meg a letöltött fájlt.</li>
+        <li>
+          Ha a telefon kéri, engedélyezd az adott forrásból
+          történő alkalmazástelepítést.
+        </li>
+        <li>Olvasd át a telepítési figyelmeztetéseket,
+          majd telepítsd az alkalmazást, ha megbízhatónak találod.</li>
+      </ol>
+
+      <p class="security-note">
+        Biztonsági okokból csak megbízható forrásból származó
+        APK-t telepíts. A Play Áruházon kívüli alkalmazásoknál
+        a telefon külön figyelmeztetést jeleníthet meg.
+      </p>
+    </div>
+  </section>
+
+  <!-- APK letöltése előtti biztonsági ablak -->
+  <div
+    class="download-modal-backdrop"
+    *ngIf="showDownloadConfirmation"
+    (click)="cancelDownload()">
+
+    <section
+      class="download-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="downloadModalTitle"
+      (click)="$event.stopPropagation()">
+
+      <div class="download-modal-icon">
+        📱
+      </div>
+
+      <h2 id="downloadModalTitle">
+        Biztonsági figyelmeztetés
+      </h2>
+
+      <p class="download-warning">
+        <strong>
+          Csak Androidos telefon készülékre töltsd le!
+        </strong>
+      </p>
+
+      <p class="download-modal-description">
+        A letöltés elindul, ha jóváhagyod.
+      </p>
+
+      <p
+        class="download-app-name"
+        *ngIf="selectedAppForDownload">
+
+        Kiválasztott alkalmazás:
+        <strong>{{ selectedAppForDownload.name }}</strong>
+      </p>
+
+      <div class="download-modal-actions">
+
+        <button
+          type="button"
+          class="btn btn-download"
+          (click)="confirmDownload()">
+
+          ⬇ Letöltés
+
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-exit"
+          (click)="cancelDownload()">
+
+          Kilépés
+
+        </button>
+
+      </div>
+
     </section>
   </div>
-</main>
+
+</div>
