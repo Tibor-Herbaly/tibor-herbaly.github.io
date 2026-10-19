@@ -20,6 +20,30 @@ interface AndroidApp {
 
 export class AndroidAppComponent {
 
+  showWeatherGallery = false;
+  readonly weatherAppScreenshots = [
+    {
+      src: 'assets/weather-app/weather-app-1.png',
+      alt: 'WeatherApp képernyőkép 1'
+    },
+    {
+      src: 'assets/weather-app/weather-app-2.png',
+      alt: 'WeatherApp képernyőkép 2'
+    },
+    {
+      src: 'assets/weather-app/weather-app-3.png',
+      alt: 'WeatherApp képernyőkép 3'
+    },
+    {
+      src: 'assets/weather-app/weather-app-map.png',
+      alt: 'WeatherApp képernyőkép map'
+    },
+    {
+      src: 'assets/weather-app/weather-app-settings.png',
+      alt: 'WeatherApp képernyőkép Settings'
+    }
+  ];
+
   // A biztonsági ablak állapota
   showDownloadConfirmation = false;
 

@@ -90,6 +90,32 @@
             {{ app.description }}
           </p>
 
+          <section class="app-gallery" *ngIf="app.name === 'WeatherApp'">
+            <h4>Nézz képeket a WeatherApp-ról</h4>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-gallery"
+              [attr.aria-expanded]="showWeatherGallery"
+              aria-controls="weatherAppGallery"
+              (click)="showWeatherGallery = !showWeatherGallery">
+              {{ showWeatherGallery ? 'Képek elrejtése' : 'Képek megtekintése' }}
+            </button>
+
+            <div
+              id="weatherAppGallery"
+              class="gallery-grid"
+              *ngIf="showWeatherGallery">
+              <a
+                class="gallery-image-link"
+                *ngFor="let screenshot of weatherAppScreenshots"
+                [href]="screenshot.src"
+                target="_blank"
+                rel="noopener noreferrer">
+                <img [src]="screenshot.src" [alt]="screenshot.alt" loading="lazy">
+              </a>
+            </div>
+          </section>
+
           <div class="app-version">
             <span>Android-alkalmazás</span>
             <span>v{{ app.version }}</span>
