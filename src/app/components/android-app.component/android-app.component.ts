@@ -80,7 +80,7 @@ export class AndroidAppComponent {
   selectedCategory = 'Mindegyik';
 
   // Az alkalmazások adatai.
-  // A downloadUrl mezőbe a saját GitHub Release letöltési linkjét írd!
+  // A downloadUrl mezőbe a saját GitHub Release letöltési linkjét kell írni!
   apps: AndroidApp[] = [
     {
       name: 'WeatherApp',

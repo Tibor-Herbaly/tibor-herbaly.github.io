@@ -1,1 +1,33 @@
-<p>writings.component works!</p>
+<main class="writings">
+  <header class="writings__header">
+    <p class="writings__eyebrow">Írások</p>
+    <h1>Gondolatok és történetek</h1>
+    <p class="writings__intro">A bejegyzések hamarosan olvashatók lesznek.</p>
+  </header>
+
+  <section class="writing-grid" aria-label="Bejegyzések">
+    @for (writing of writings; track writing) {
+      <button
+        class="writing-card"
+        type="button"
+        (click)="openWriting(writing)"
+        [attr.aria-label]="'A(z) ' + writing + '. bejegyzés megnyitása'"
+      >
+        <span class="writing-card__number">{{ writing.toString().padStart(2, '0') }}</span>
+        <span class="writing-card__title">Hamarosan</span>
+        <span class="writing-card__hint">Kattints a megnyitáshoz <span aria-hidden="true">→</span></span>
+      </button>
+    }
+  </section>
+
+  @if (selectedWriting !== null) {
+    <section class="writing-detail" aria-live="polite" aria-labelledby="writing-detail-title">
+      <div>
+        <p class="writings__eyebrow">Bejegyzés {{ selectedWriting.toString().padStart(2, '0') }}</p>
+        <h2 id="writing-detail-title">Ez az írás még készül</h2>
+        <p>Amint felkerül a bejegyzés, itt elolvashatod.</p>
+      </div>
+      <button class="writing-detail__close" type="button" (click)="closeWriting()">Bezárás</button>
+    </section>
+  }
+</main>

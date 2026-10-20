@@ -23,6 +23,7 @@ import {WeatherDetailsComponent} from './components/weather-details.component/we
 import {AdminTibberComponent} from './components/others/admin-tibber.component/admin-tibber.component';
 import {AndroidAppComponent} from './components/android-app.component/android-app.component';
 import {BlackjackComponent} from './components/games/blackjack.component/blackjack.component';
+import {WritingsComponent} from './components/others/writings.component/writings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -39,12 +40,14 @@ const routes: Routes = [
   { path: 'dice-tipp2', component: DiceTippComponent },
   { path: 'big-throw', component: BigThrowComponent },
   { path: 'memory-game', component: MemoryGameComponent },
+  { path: 'blackjack', component: BlackjackComponent },
+
   { path: 'donation', component: DonationComponent},
   { path: 'american-music', component: VideosComponent},
   { path: 'music', component: MusicComponent },
   { path: 'ford-promotion', component: FordPromotionComponent},
   { path: 'contact', component: ContactComponent },
-  { path: 'page', component: PageRatingComponent},
+  { path: 'page-rating', component: PageRatingComponent},
   { path: 'images', component: PicturesComponent },
   { path: 'space-science', component: SpaceScienceComponent },
   // Hírek – kategóriaválasztó és kategóriaoldalak
@@ -52,7 +55,8 @@ const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'weather', component: WeatherDetailsComponent },
   { path: 'admin-tibber', component: AdminTibberComponent },
-  { path: 'blackjack', component: BlackjackComponent }
+  { path: 'writings', component: WritingsComponent }
+
 ];
 
 @NgModule({

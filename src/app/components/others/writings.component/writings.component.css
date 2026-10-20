@@ -1,0 +1,144 @@
+.writings {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 4rem 0 5rem;
+  color: #202a36;
+}
+
+.writings__header {
+  max-width: 42rem;
+  margin-bottom: 2.5rem;
+}
+
+.writings__eyebrow {
+  margin: 0 0 0.65rem;
+  color: #6c7d8e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.writings__header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.1;
+}
+
+.writings__intro {
+  margin: 1rem 0 0;
+  color: #66717e;
+  font-size: 1.05rem;
+}
+
+.writing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.writing-card {
+  display: flex;
+  min-height: 12rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border: 1px solid #e2e7ec;
+  border-radius: 1rem;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.writing-card:hover,
+.writing-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: #a9bac9;
+  box-shadow: 0 0.75rem 1.75rem rgb(32 42 54 / 9%);
+}
+
+.writing-card:focus-visible,
+.writing-detail__close:focus-visible {
+  outline: 3px solid #527b9e;
+  outline-offset: 3px;
+}
+
+.writing-card__number {
+  color: #8a99a7;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.writing-card__title {
+  margin: 1.5rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.writing-card__hint {
+  color: #66717e;
+  font-size: 0.9rem;
+}
+
+.writing-card__hint span {
+  margin-left: 0.25rem;
+}
+
+.writing-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #f2f5f7;
+}
+
+.writing-detail h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.writing-detail p:last-child {
+  margin: 0.5rem 0 0;
+  color: #66717e;
+}
+
+.writing-detail__close {
+  flex: 0 0 auto;
+  padding: 0.65rem 1rem;
+  border: 1px solid #c8d1d9;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .writing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .writings {
+    padding-top: 2.5rem;
+  }
+
+  .writing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .writing-card {
+    min-height: 9rem;
+  }
+
+  .writing-detail {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
