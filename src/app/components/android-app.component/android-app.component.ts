@@ -95,7 +95,7 @@ export class AndroidAppComponent {
       name: 'WeatherApp',
       description: 'Időjárás-lekérdezés magyar és külföldi városokra.',
       category: 'Időjárás',
-      version: '1.0.0',
+      version: '1.1.0',
       icon: '🌤️',
       features: [
         'Aktuális időjárási adatok',
@@ -103,8 +103,8 @@ export class AndroidAppComponent {
         'Részletes időjárási információk'
       ],
       screenshots: this.weatherAppScreenshots,
-      downloadUrl: 'https://github.com/Tibor-Herbaly/tibor-herbaly.github.io/releases/download/v1.0.0/app-release_146_WeaterApp.apk',
-      fileName: 'WeatherApp.apk'
+      downloadUrl: 'https://github.com/Tibor-Herbaly/tibor-herbaly.github.io/releases/download/v1.1.0/app-release_v1.1.0_WeatherApp.apk',
+      fileName: 'WeatherApp-1.1.0.apk'
     },
     {
       name: 'Blaue Power',
