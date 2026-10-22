@@ -10,7 +10,7 @@
 
     <p class="hero-description">
       Fedezd fel saját fejlesztésű alkalmazásaimat,
-      és töltsd le őket közvetlenül a telefonodra!
+      és töltsd le őket közvetlenül az Androidos telefonodra !
     </p>
 
     <div class="hero-info">
@@ -68,7 +68,7 @@
 
     <div
       class="col-12 col-md-6 col-xl-4"
-      *ngFor="let app of filteredApps; trackBy: trackByName">
+      *ngFor="let app of filteredApps; let appIndex = index; trackBy: trackByName">
 
       <article class="app-card h-100">
 
@@ -90,24 +90,24 @@
             {{ app.description }}
           </p>
 
-          <section class="app-gallery" *ngIf="app.name === 'WeatherApp'">
-            <h4>Nézz képeket a WeatherApp-ról !:</h4>
+          <section class="app-gallery" *ngIf="app.screenshots?.length">
+            <h4>Képernyőképek</h4>
             <button
               type="button"
               class="btn btn-outline-primary btn-gallery"
-              [attr.aria-expanded]="showWeatherGallery"
-              aria-controls="weatherAppGallery"
-              (click)="showWeatherGallery = !showWeatherGallery">
-              {{ showWeatherGallery ? 'Képek elrejtése' : 'Képek megtekintése' }}
+              [attr.aria-expanded]="isGalleryOpen(app.name)"
+              [attr.aria-controls]="'appGallery' + appIndex"
+              (click)="toggleGallery(app.name)">
+              {{ isGalleryOpen(app.name) ? 'Képek elrejtése' : 'Képek megtekintése' }}
             </button>
 
             <div
-              id="weatherAppGallery"
+              [id]="'appGallery' + appIndex"
               class="gallery-grid"
-              *ngIf="showWeatherGallery">
+              *ngIf="isGalleryOpen(app.name)">
               <a
                 class="gallery-image-link"
-                *ngFor="let screenshot of weatherAppScreenshots"
+                *ngFor="let screenshot of app.screenshots"
                 [href]="screenshot.src"
                 target="_blank"
                 rel="noopener noreferrer">

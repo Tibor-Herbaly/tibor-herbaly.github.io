@@ -9,19 +9,20 @@ interface AndroidApp {
   features: string[];
   downloadUrl: string;
   fileName: string;
+  screenshots?: { src: string; alt: string }[];
 }
 
 @Component({
   selector: 'app-android-app',
   standalone: false,
-  templateUrl: './adroid-app.component.html',
+  templateUrl: './android-app.component.html',
   styleUrl: './android-app.component.css'
 })
 
 export class AndroidAppComponent {
 
-  showWeatherGallery = false;
-  readonly weatherAppScreenshots = [
+  readonly galleryVisibility: Record<string, boolean> = {};
+  private readonly weatherAppScreenshots = [
     {
       src: 'assets/weather-app/weather-app-1.png',
       alt: 'WeatherApp képernyőkép 1'
@@ -43,6 +44,14 @@ export class AndroidAppComponent {
       alt: 'WeatherApp képernyőkép Settings'
     }
   ];
+
+  isGalleryOpen(appName: string): boolean {
+    return this.galleryVisibility[appName] ?? false;
+  }
+
+  toggleGallery(appName: string): void {
+    this.galleryVisibility[appName] = !this.isGalleryOpen(appName);
+  }
 
   // A biztonsági ablak állapota
   showDownloadConfirmation = false;
@@ -93,25 +102,68 @@ export class AndroidAppComponent {
         'Városkeresés',
         'Részletes időjárási információk'
       ],
+      screenshots: this.weatherAppScreenshots,
       downloadUrl: 'https://github.com/Tibor-Herbaly/tibor-herbaly.github.io/releases/download/v1.0.0/app-release_146_WeaterApp.apk',
       fileName: 'WeatherApp.apk'
     },
     {
-      name: 'Tibber Game',
-      description: 'Saját fejlesztésű Android-játékok gyűjteménye.',
+      name: 'Blaue Power',
+      description: 'Saját fejlesztésű Android játék.',
       category: 'Játék',
-      version: '1.0.0',
+      version: '1.1.2',
       icon: '🎮',
       features: [
-        'Ügyességi és logikai játékok',
-        'Pontgyűjtés',
-        'Szórakozás offline is, ha az alkalmazás támogatja'
+        'Ügyességi, és logikai',
+        'Pontgyűjtés, érem tábla',
+        'Szórakozás és izgalom offline is'
+      ],
+      screenshots: [
+        {
+          src: 'assets/platform-game/platform-game-1.png',
+          alt: 'Blaue Power képernyőkép 1'
+        },
+        {
+          src: 'assets/platform-game/platform-game-2.png',
+          alt: 'Blaue Power képernyőkép 2'
+        },
+        {
+          src: 'assets/platform-game/platform-game-3.png',
+          alt: 'Blaue Power képernyőkép 3'
+        },
+        {
+          src: 'assets/platform-game/platform-game-4.png',
+          alt: 'Blaue Power képernyőkép 4'
+        },
+        {
+          src: 'assets/platform-game/platform-game-5.png',
+          alt: 'Blaue Power képernyőkép 5'
+        }
+      ],
+      downloadUrl: 'https://github.com/Tibor-Herbaly/tibor-herbaly.github.io/releases/download/v1.1.2/app-release_148_PlatformG_Blaue_P.apk',
+      fileName: 'PlatformGame.apk'
+    },
+    {
+      name: 'SmartToDo',
+      description: 'Okos, ügyes emlékeztető alkalmazás, amely segít a feladatok nyomon követésében.',
+      category: 'Hétköznapi',
+      version: '1.0.0',
+      icon: '📝',
+      features: [
+        'Feladatok létrehozása és kezelése',
+        'Emlékeztetők beállítása',
+        'Ciklus kezelés és prioritások beállítása'
+      ],
+      screenshots: [
+        {
+          src: 'assets/smart-todo/smart-todo.png',
+          alt: 'SmartToDo képernyőkép'
+        }
       ],
       downloadUrl: '',
       fileName: 'app-release.apk'
     },
     {
-      name: 'Mi van körülöttem?',
+      name: 'Mi van körülöttem ?',
       description: 'A közelben található helyek felfedezése térképen.',
       category: 'Térkép',
       version: '1.0.0',
@@ -120,6 +172,12 @@ export class AndroidAppComponent {
         'Térképes megjelenítés',
         'Közeli helyek keresése',
         'Helyalapú funkciók'
+      ],
+      screenshots: [
+        {
+          src: 'assets/nearby-places/nearby-places.png',
+          alt: 'Mi van körülöttem? képernyőkép'
+        }
       ],
       downloadUrl: '',
       fileName: 'app-release.apk'
