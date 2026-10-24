@@ -1,14 +1,16 @@
 [
-  { "id": "2FS-wdAvjAU", "title": "Chrissy Costanza", "description": "Zseniális éneke" },
-  { "id": "ePQl1JyGpYc", "title": "Two Steps From Hell", "description": "Élő zenekar" },
-  { "id": "xy921Pn3lhA", "title": "Two Steps From Hell", "description": "Élő zenekar" },
+  { "id": "2FS-wdAvjAU", "title": "Chrissy Costanza - You'd Be Right", "description": "Zseniális éneke" },
+  { "id": "ePQl1JyGpYc", "title": "Two Steps From Hell - Star Sky", "description": "Élő zenekar" },
+  { "id": "xy921Pn3lhA", "title": "Two Steps From Hell - Never Back Down", "description": "Színfalak mögötti gyakorlat." },
   { "id": "qIKwY89q5FU", "title": "Zella Day - Sacrifice", "description": "" },
   { "id": "jMK1UZRBwvU", "title": "Selena Gomez - Save The Day", "description": "Selena megmenti a napot, vagy menti a menthetőt ?" },
   { "id": "4-swjy1zQqc", "title": "Cover by First to Eleven - Something Bad", "description": "Érdemes meghallgatni !" },
   { "id": "pav--oy0F5Y", "title": "CrushCr'Cr' - Paramore (Cover by First to Eleven", "description": "" },
   { "id": "hDeHY-N72k0", "title": "Sting - Concrete Castles ft. Point North (Original Music Video)", "description": "" },
   { "id": "bzLZqmINybA", "title": "Hero - Skillet (Rock Cover by First To Eleven) ", "description": "Néha szükségünk van egy Hősre ! :)" },
-  { "id": "XXUuXxzTnHY", "title": "Chrissy Costanza - Weather (Against the Current)", "description": "Vajon milyen lesz ma az időjárás ?" }
+  { "id": "XXUuXxzTnHY", "title": "Chrissy Costanza - Weather (Against the Current)", "description": "Vajon milyen lesz ma az időjárás ?" },
+  { "id": "EJ09pSuA9hw", "title": "Lindsey Stirling - UnderGround", "description": "" },
+  { "id": "DudygHca9AY", "title": "Lea Michele - Christmas in New York", "description": "" }
 ]
 
 

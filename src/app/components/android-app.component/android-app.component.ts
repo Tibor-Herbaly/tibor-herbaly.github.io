@@ -155,8 +155,40 @@ export class AndroidAppComponent {
       ],
       screenshots: [
         {
-          src: 'assets/smart-todo/smart-todo.png',
-          alt: 'SmartToDo képernyőkép'
+          src: 'assets/smart-todo/smart_todo-1.png',
+          alt: 'SmartToDo kép 1'
+        },
+        {
+          src: 'assets/smart-todo/smart_todo-alarm.png',
+          alt: 'SmartToDo alarm beállítás képernyő.'
+        },
+        {
+          src: 'assets/smart-todo/smart_todo-calendar.png',
+          alt: 'SmartToDo calendar nézet képernyő.'
+        },
+        {
+          src: 'assets/smart-todo/smart_todo-widget.png',
+          alt: 'SmartToDo widget képernyő.'
+        }
+      ],
+      downloadUrl: 'https://github.com/Tibor-Herbaly/tibor-herbaly.github.io/releases/download/v1.0.0/app-release_SmartTodo.apk',
+      fileName: 'smart-todo.apk'
+    },
+    {
+      name: 'Wall Shooter Game',
+      description: 'A célt kell eltalálni akadályok között, hogy pontot szerezzünk.',
+      category: 'Játék',
+      version: '1.0.0',
+      icon: '🎯',
+      features: [
+        'Célzás és lövés',
+        'Akadályok és pontszerzés',
+        'Szórakoztató és kihívást jelentő játékmenet'
+      ],
+      screenshots: [
+        {
+          src: 'assets/wall-shooter/wall-shooter-1.png',
+          alt: 'Wall Shooter Game képernyőkép 1'
         }
       ],
       downloadUrl: '',
