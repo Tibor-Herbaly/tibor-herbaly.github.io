@@ -137,4 +137,28 @@
       Város mentése
     </button>
   </section>
+
+  <section class="settings-card navbar-color-card" *ngIf="!loading && user">
+    <div class="settings-card-heading">
+      <span class="settings-card-icon"><i class="bi bi-palette"></i></span>
+      <div>
+        <h2>Navigációs sáv testreszabása</h2>
+        <p>Válaszd ki a navigációs sáv színét. A választásod automatikusan mentésre kerül ebben a böngészőben.</p>
+      </div>
+    </div>
+    <div class="navbar-color-options" role="group" aria-label="Navigációs sáv színe">
+      <button
+        *ngFor="let color of navbarColors"
+        type="button"
+        class="navbar-color-option"
+        [class.navbar-color-option-selected]="navbarColor === color.value"
+        [attr.aria-pressed]="navbarColor === color.value"
+        (click)="setNavbarColor(color.value)">
+        <span class="navbar-color-swatch" [style.background-color]="color.hex">
+          <i *ngIf="navbarColor === color.value" class="bi bi-check-lg" aria-hidden="true"></i>
+        </span>
+        <span>{{ color.label }}</span>
+      </button>
+    </div>
+  </section>
 </main>

@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CitySearchResult } from '../../models/weather-response';
 import { AuthService, CurrentUser } from '../../services/auth.service';
+import {
+  NAVBAR_COLORS,
+  NavbarColor,
+  NavbarColorService
+} from '../../services/navbar-color.service';
 import { WeatherService } from '../../services/weather.service';
 
 @Component({
@@ -21,12 +26,17 @@ export class SettingsComponent implements OnInit {
   errorMessage = '';
   successMessage = '';
   showEmailInNavbar = true;
+  navbarColor: NavbarColor;
+  readonly navbarColors = NAVBAR_COLORS;
 
   constructor(
     private authService: AuthService,
     private weatherService: WeatherService,
+    private navbarColorService: NavbarColorService,
     private router: Router
-  ) {}
+  ) {
+    this.navbarColor = this.navbarColorService.getColor();
+  }
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe({
@@ -140,6 +150,11 @@ export class SettingsComponent implements OnInit {
         this.errorMessage = 'Nem sikerült elmenteni a láthatósági beállítást. Próbáld újra.';
       }
     });
+  }
+
+  setNavbarColor(color: NavbarColor): void {
+    this.navbarColorService.setColor(color);
+    this.navbarColor = color;
   }
 
   cityLabel(city: CitySearchResult): string {

@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {WeatherService} from '../../services/weather.service';
 import {WeatherResponse} from '../../models/weather-response';
+import {NavbarColor, NavbarColorService} from '../../services/navbar-color.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class Navbar implements OnInit {
   userName = '';
   userEmail = '';
   showEmailInNavbar = true;
+  navbarColor: NavbarColor = 'default';
 
   // ===== IDŐJÁRÁS =====
   weather: WeatherResponse | null = null;
@@ -30,11 +32,16 @@ export class Navbar implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private weatherService: WeatherService
+    private weatherService: WeatherService,
+    private navbarColorService: NavbarColorService
   ) {
   }
 
   ngOnInit(): void {
+
+    this.navbarColorService.color$.subscribe(color => {
+      this.navbarColor = color;
+    });
 
     // Feliratkozás a közös felhasználói állapotra.
     this.authService.currentUser$.subscribe(user => {

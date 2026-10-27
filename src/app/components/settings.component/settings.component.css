@@ -201,6 +201,54 @@
   flex-shrink: 0;
 }
 
+.navbar-color-card {
+  margin-top: 18px;
+}
+
+.navbar-color-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 9px;
+}
+
+.navbar-color-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.navbar-color-option:hover {
+  border-color: #a5b4fc;
+}
+
+.navbar-color-option-selected {
+  border-color: #5267e8;
+  background: #f5f6ff;
+  font-weight: 650;
+}
+
+.navbar-color-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid rgb(36 48 71 / 16%);
+  border-radius: 50%;
+  color: #334155;
+}
+
 .settings-status {
   color: #5267e8;
 }

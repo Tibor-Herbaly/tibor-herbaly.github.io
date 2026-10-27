@@ -5,3 +5,32 @@
   color: red;
   font-size: 0.9em;
 }
+
+.captcha-pairs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.captcha-pairs span {
+  padding: 8px 10px;
+  border: 1px solid #dce1eb;
+  border-radius: 8px;
+  background: #f7f8fc;
+}
+
+.captcha-answers {
+  display: flex;
+  gap: 10px;
+}
+
+.captcha-answers .form-control {
+  max-width: 110px;
+}
+
+@media (max-width: 480px) {
+  .captcha-answers {
+    flex-wrap: wrap;
+  }
+}

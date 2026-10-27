@@ -114,9 +114,55 @@
       </div>
     </div>
 
+    <!-- Regisztrációs CAPTCHA -->
+    <div class="form-group m-3 register-captcha">
+      <label>Biztonsági ellenőrzés</label>
+      <p class="mb-2">{{ captchaInstruction }}</p>
+
+      <div class="captcha-pairs" aria-label="CAPTCHA számpárok">
+        <span *ngFor="let pair of captchaPairs; let i = index">
+          {{ i + 1 }}. <strong>{{ pair }}</strong>
+        </span>
+      </div>
+
+      <div class="captcha-answers">
+        <input
+          type="text"
+          class="form-control"
+          name="captchaFirst"
+          [(ngModel)]="captchaFirst"
+          required
+          maxlength="2"
+          pattern="[0-9]{2}"
+          inputmode="numeric"
+          autocomplete="off"
+          aria-label="Első kért számpár">
+        <input
+          type="text"
+          class="form-control"
+          name="captchaSecond"
+          [(ngModel)]="captchaSecond"
+          required
+          maxlength="2"
+          pattern="[0-9]{2}"
+          inputmode="numeric"
+          autocomplete="off"
+          aria-label="Második kért számpár">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="loadRegisterCaptcha()"
+          [disabled]="captchaLoading"
+          aria-label="Új CAPTCHA kérése">
+          Új CAPTCHA
+        </button>
+      </div>
+      <small *ngIf="captchaLoading">CAPTCHA betöltése...</small>
+    </div>
+
     <button
       type="submit"
-      [disabled]="f.invalid || !isPasswordStrong() || !passwordsMatch()"
+      [disabled]="f.invalid || !isPasswordStrong() || !passwordsMatch() || captchaLoading || !captchaLoaded"
     >
       Regisztráció
     </button>

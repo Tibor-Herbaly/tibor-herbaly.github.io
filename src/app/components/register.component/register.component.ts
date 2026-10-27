@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {RegistrationRequestModel} from '../../models/register-login/registration-request.model';
 import {AuthService} from '../../services/auth.service';
 
@@ -8,7 +8,7 @@ import {AuthService} from '../../services/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   email = '';
   name = '';
   password = '';
@@ -21,8 +21,37 @@ export class RegisterComponent {
   wrongAttempts = 0;
   maxAttempts = 3;
   showPassword = false; // Jelszó láthatóság állapota, most nem működik.
+  captchaPairs: string[] = [];
+  captchaInstruction = '';
+  captchaFirst = '';
+  captchaSecond = '';
+  captchaLoading = false;
+  captchaLoaded = false;
 
   constructor(private auth: AuthService) {
+  }
+
+  ngOnInit(): void {
+    this.loadRegisterCaptcha();
+  }
+
+  loadRegisterCaptcha(): void {
+    this.captchaLoading = true;
+    this.captchaLoaded = false;
+    this.auth.getRegisterCaptcha().subscribe({
+      next: captcha => {
+        this.captchaPairs = captcha.pairs;
+        this.captchaInstruction = captcha.instruction;
+        this.captchaFirst = '';
+        this.captchaSecond = '';
+        this.captchaLoaded = true;
+        this.captchaLoading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Nem sikerült betölteni a CAPTCHA-t. Próbáld újra.';
+        this.captchaLoading = false;
+      }
+    });
   }
 
   togglePasswordVisibility() { // Jelszó láthatóság váltása
@@ -60,7 +89,10 @@ export class RegisterComponent {
     const request: RegistrationRequestModel = {
       email: this.email,
       name: this.name,
-      password: this.password
+      password: this.password,
+      confirmPassword: this.confirmPassword,
+      captchaFirst: this.captchaFirst,
+      captchaSecond: this.captchaSecond
     };
 
     this.auth.register(request).subscribe({
@@ -85,10 +117,15 @@ export class RegisterComponent {
           this.errorMessage =
             'Ez az e-mail-cím már regisztrálva van ! Kérlek, használj másik címet, vagy jelentkezz be.';
         } else {
-          this.errorMessage = message || 'Hiba a regisztráció során...';
+          this.errorMessage = message === 'INVALID_REGISTER_CAPTCHA'
+            ? 'A CAPTCHA-válasz nem megfelelő. Próbáld újra.'
+            : message === 'PASSWORDS_DO_NOT_MATCH'
+              ? 'A két jelszó nem egyezik!'
+            : message || 'Hiba a regisztráció során...';
         }
 
         this.successMessage = '';
+        this.loadRegisterCaptcha();
       }
 
     });

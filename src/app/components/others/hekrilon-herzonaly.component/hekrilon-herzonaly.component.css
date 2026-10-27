@@ -1,0 +1,341 @@
+/*.hekrilon-translator {*/
+/*  width: min(100% - 2rem, 72rem);*/
+/*  margin: 0 auto;*/
+/*  padding: 4rem 0 5rem;*/
+/*  color: #202a36;*/
+/*}*/
+
+/*.hekrilon-translator__header {*/
+/*  max-width: 46rem;*/
+/*  margin-bottom: 2rem;*/
+/*}*/
+
+/*.hekrilon-translator__eyebrow {*/
+/*  margin: 0 0 0.65rem;*/
+/*  color: #6c7d8e;*/
+/*  font-size: 0.8rem;*/
+/*  font-weight: 700;*/
+/*  letter-spacing: 0.12em;*/
+/*  text-transform: uppercase;*/
+/*}*/
+
+/*.hekrilon-translator__header h1 {*/
+/*  margin: 0;*/
+/*  font-size: clamp(2rem, 5vw, 3.25rem);*/
+/*  line-height: 1.1;*/
+/*}*/
+
+/*.hekrilon-translator__intro {*/
+/*  margin: 1rem 0 0;*/
+/*  color: #66717e;*/
+/*  font-size: 1.05rem;*/
+/*}*/
+
+/*.translator-panels {*/
+/*  display: grid;*/
+/*  grid-template-columns: repeat(2, minmax(0, 1fr));*/
+/*  gap: 1rem;*/
+/*}*/
+
+/*.translator-panel {*/
+/*  display: flex;*/
+/*  min-width: 0;*/
+/*  flex-direction: column;*/
+/*  gap: 0.75rem;*/
+/*}*/
+
+/*.translator-panel__title {*/
+/*  font-weight: 700;*/
+/*}*/
+
+/*.translator-panel__input {*/
+/*  width: 100%;*/
+/*  min-height: 18rem;*/
+/*  padding: 1rem;*/
+/*  border: 1px solid #d5dde4;*/
+/*  border-radius: 0.85rem;*/
+/*  background: #fff;*/
+/*  color: inherit;*/
+/*  font: inherit;*/
+/*  line-height: 1.6;*/
+/*  resize: vertical;*/
+/*}*/
+
+/*.translator-panel__input::placeholder {*/
+/*  color: #8995a1;*/
+/*}*/
+
+/*.translator-panel__input:focus-visible {*/
+/*  border-color: #527b9e;*/
+/*  outline: 3px solid rgb(82 123 158 / 20%);*/
+/*}*/
+
+/*.translator-panel__input--hekrilon {*/
+/*  direction: auto;*/
+/*}*/
+
+/*.translator-action {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*  gap: 0.75rem;*/
+/*  margin-top: 1.5rem;*/
+/*}*/
+
+/*.translator-action__button {*/
+/*  min-width: 10rem;*/
+/*  padding: 0.75rem 1.5rem;*/
+/*  border: 0;*/
+/*  border-radius: 0.65rem;*/
+/*  background: #527b9e;*/
+/*  color: #fff;*/
+/*  font: inherit;*/
+/*  font-weight: 700;*/
+/*}*/
+
+/*.translator-action__button:disabled {*/
+/*  background: #aab6c0;*/
+/*  cursor: not-allowed;*/
+/*}*/
+
+/*.translator-action__hint {*/
+/*  margin: 0;*/
+/*  color: #66717e;*/
+/*  font-size: 0.9rem;*/
+/*  text-align: center;*/
+/*}*/
+
+/*@media (max-width: 700px) {*/
+/*  .hekrilon-translator {*/
+/*    padding-top: 2.5rem;*/
+/*  }*/
+
+/*  .translator-panels {*/
+/*    grid-template-columns: 1fr;*/
+/*  }*/
+
+/*  .translator-panel__input {*/
+/*    min-height: 13rem;*/
+/*  }*/
+/*}*/
+
+
+.hekrilon-translator {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 4rem 0 5rem;
+  color: #202a36;
+}
+
+.hekrilon-translator__header {
+  max-width: 46rem;
+  margin-bottom: 2rem;
+}
+
+.hekrilon-translator__eyebrow {
+  margin: 0 0 0.65rem;
+  color: #6c7d8e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hekrilon-translator__header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.1;
+}
+
+.hekrilon-translator__intro {
+  margin: 1rem 0 0;
+  color: #66717e;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.translator-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.translator-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.translator-panel__title {
+  font-weight: 700;
+}
+
+.translator-panel__input,
+.translator-panel__output {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 18rem;
+  padding: 1rem;
+  border: 1px solid #d5dde4;
+  border-radius: 0.85rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  line-height: 1.6;
+}
+
+.translator-panel__input {
+  resize: vertical;
+}
+
+.translator-panel__input::placeholder {
+  color: #8995a1;
+}
+
+.translator-panel__input:focus-visible {
+  border-color: #527b9e;
+  outline: 3px solid rgb(82 123 158 / 20%);
+}
+
+.translator-panel__output {
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.translator-panel__empty {
+  margin: 0;
+  color: #8995a1;
+}
+
+.translator-panel__counter {
+  color: #66717e;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* A Hekrilön-betűképek sora */
+.hekrilon-glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Egyetlen betű helye */
+.hekrilon-glyph {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 3.4rem;
+  padding: 0.2rem;
+  border: 1px solid #e1e7ed;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+}
+
+/* A valódi betűkép */
+.hekrilon-glyph__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Helykitöltő, amíg nincs digitalizált betűkép */
+.hekrilon-glyph__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #527b9e;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Szóköz a képes szövegben */
+.hekrilon-glyph__space {
+  display: inline-block;
+  flex: 0 0 0.8rem;
+  height: 1rem;
+}
+
+/* Írásjelek */
+.hekrilon-glyph__punctuation {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.5rem;
+  font-size: 1.3rem;
+}
+
+/* Gomb és tájékoztató */
+.translator-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.translator-action__button {
+  min-width: 10rem;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 0.65rem;
+  background: #527b9e;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.translator-action__button:hover:not(:disabled) {
+  background: #3d6587;
+}
+
+.translator-action__button:focus-visible {
+  outline: 3px solid rgb(82 123 158 / 35%);
+  outline-offset: 3px;
+}
+
+.translator-action__button:disabled {
+  background: #aab6c0;
+  cursor: not-allowed;
+}
+
+.translator-action__hint {
+  margin: 0;
+  color: #66717e;
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .hekrilon-translator {
+    padding-top: 2.5rem;
+  }
+
+  .translator-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .translator-panel__input,
+  .translator-panel__output {
+    min-height: 13rem;
+  }
+
+  .hekrilon-glyphs {
+    gap: 0.3rem;
+  }
+
+  .hekrilon-glyph {
+    width: 2.4rem;
+    height: 3rem;
+  }
+}

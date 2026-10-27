@@ -24,6 +24,9 @@ export class LoginOutDeleteComponent implements OnInit {
   codeSent = false;
   recoveryMessage = '';
   recoveryError = '';
+  showDeleteCodePrompt = false;
+  deleteCode = '';
+  deleteError = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -118,26 +121,38 @@ export class LoginOutDeleteComponent implements OnInit {
   }
 
   onDeleteAccount() {
-    if (confirm(`Biztosan törölni szeretnéd a fiókodat ${this.userName}? Ez a művelet nem visszavonható!`)) {
-      this.auth.deleteAccount().subscribe({
+    this.deleteError = '';
+    if (this.showDeleteCodePrompt) {
+      if (!/^[A-Za-z0-9]{6}$/.test(this.deleteCode)) {
+        this.deleteError = 'A törlő kód pontosan 6 angol betűből és/vagy számból álljon.';
+        return;
+      }
+
+      this.auth.deleteAccount(this.deleteCode).subscribe({
         next: () => {
-          // Backend 200 OK esetén
-          alert(`A fiók sikeresen törölve lett. ${this.userName} Viszont látásra !`);
+          alert(`A fiók sikeresen törölve lett. ${this.userName} Viszont látásra!`);
           this.auth.clearSession();
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          // Hibák kezelése a státuszkód alapján
-          if (err.status === 401) {
-            alert('Nem vagy bejelentkezve, nem lehet törölni a fiókot !');
+          if (err.status === 400) {
+            this.deleteError = 'Hibás törlő kód. Ellenőrizd a Profilom oldalon.';
+          } else if (err.status === 401) {
+            this.deleteError = 'Nem vagy bejelentkezve, ezért nem törölhető a fiók.';
           } else if (err.status === 404) {
-            alert('Nem található a felhasználó !');
+            this.deleteError = 'Nem található a felhasználó.';
           } else {
-            alert('Hiba történt a törlés során...');
+            this.deleteError = 'Hiba történt a törlés során.';
           }
-          console.error(err);
         }
       });
+      return;
+    }
+
+    if (confirm(`Biztosan törölni szeretnéd a fiókodat "${this.userName}"? \n
+    Először egy törlő kódot kell megadnod a Profilom oldalról. Végleges törlés esetén.`)) {
+      this.deleteCode = '';
+      this.showDeleteCodePrompt = true;
     }
   }
 
@@ -206,4 +221,3 @@ export class LoginOutDeleteComponent implements OnInit {
   }
 
 }
-

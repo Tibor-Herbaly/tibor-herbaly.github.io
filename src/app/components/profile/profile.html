@@ -172,5 +172,112 @@
       </form>
     </section>
 
+    <section class="profile-card password-reset-card">
+      <div class="card-heading">
+        <i class="bi bi-key"></i>
+        <h2>Elfelejtetted a jelszavadat?</h2>
+      </div>
+
+      <p class="section-description">
+        Szeretnéd megváltoztatni ? Kérj egy egyszer használható kódot a fiókodhoz tartozó
+        e-mail-címre. A kód 2 percig érvényes.
+      </p>
+
+      <form #resetEmailForm="ngForm" (ngSubmit)="requestPasswordResetCode()">
+        <div class="form-field">
+          <label for="resetEmail">Fiók e-mail-címe</label>
+          <input
+            id="resetEmail"
+            type="email"
+            name="resetEmail"
+            class="form-control"
+            [(ngModel)]="resetEmail"
+            required
+            email
+            readonly
+            autocomplete="email">
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-outline-primary w-100"
+          [disabled]="loading || resetEmailForm.invalid">
+          <i class="bi bi-envelope me-2"></i>
+          Ide kérek jelszó-módosítási kódot
+        </button>
+      </form>
+
+      <form
+        *ngIf="passwordResetCodeSent"
+        #resetPasswordForm="ngForm"
+        class="reset-password-form"
+        (ngSubmit)="resetPassword()">
+        <div class="form-field">
+          <label for="resetCode">E-mailben kapott 10 számjegyű kód</label>
+          <input
+            id="resetCode"
+            type="text"
+            name="resetCode"
+            class="form-control"
+            [(ngModel)]="resetCode"
+            required
+            minlength="10"
+            maxlength="10"
+            pattern="[0-9]{10}"
+            inputmode="numeric"
+            autocomplete="one-time-code">
+        </div>
+
+        <div class="form-field">
+          <label for="resetNewPassword">Új jelszó</label>
+          <input
+            id="resetNewPassword"
+            type="password"
+            name="resetNewPassword"
+            class="form-control"
+            [(ngModel)]="resetNewPassword"
+            required
+            minlength="8"
+            autocomplete="new-password">
+        </div>
+
+        <div class="form-field">
+          <label for="resetConfirmPassword">Új jelszó még egyszer</label>
+          <input
+            id="resetConfirmPassword"
+            type="password"
+            name="resetConfirmPassword"
+            class="form-control"
+            [(ngModel)]="resetConfirmPassword"
+            required
+            minlength="8"
+            autocomplete="new-password">
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-success w-100"
+          [disabled]="loading || resetPasswordForm.invalid">
+          <i class="bi bi-shield-check me-2"></i>
+          Jelszó megváltoztatása
+        </button>
+      </form>
+    </section>
+
+    <section class="profile-card deletion-code-card">
+      <div class="card-heading">
+        <i class="bi bi-trash3"></i>
+        <h2>Törlő kód a törléshez</h2>
+      </div>
+
+      <p class="section-description">
+        Ezt a kódot be kell írnod, ha a fiókodat törölni szeretnéd.
+      </p>
+
+      <p class="deletion-code" aria-label="Fióktörlési kód">
+        {{ accountDeletionCode || 'Betöltés...' }}
+      </p>
+    </section>
+
   </div>
 </div>

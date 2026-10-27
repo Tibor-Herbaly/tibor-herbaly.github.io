@@ -1,0 +1,154 @@
+<!--<main class="hekrilon-translator">-->
+<!--  <header class="hekrilon-translator__header">-->
+<!--    <p class="hekrilon-translator__eyebrow">Hekrilön</p>-->
+<!--    <h1>Hekrilön fordító</h1>-->
+<!--    <p class="hekrilon-translator__intro">-->
+<!--      Írd be a szöveget valamelyik mezőbe. A fordítás akkor lesz elérhető, ha elkészül a Hekrilön-->
+<!--      ábécé.-->
+<!--    </p>-->
+<!--  </header>-->
+
+<!--  <section class="translator-panels" aria-label="Fordító mezők">-->
+<!--    <label class="translator-panel">-->
+<!--      <span class="translator-panel__title">Latin betűs szöveg</span>-->
+<!--      <textarea-->
+<!--        class="translator-panel__input"-->
+<!--        aria-label="Latin betűs szöveg"-->
+<!--        placeholder="Ide írd a latin betűs szöveget..."-->
+<!--      ></textarea>-->
+<!--    </label>-->
+
+<!--    <label class="translator-panel">-->
+<!--      <span class="translator-panel__title">Hekrilön szöveg</span>-->
+<!--      <textarea-->
+<!--        class="translator-panel__input translator-panel__input&#45;&#45;hekrilon"-->
+<!--        aria-label="Hekrilon szöveg"-->
+<!--        placeholder="Ide írd a Hekrilon szöveget..."-->
+<!--      ></textarea>-->
+<!--    </label>-->
+<!--  </section>-->
+
+<!--  <div class="translator-action">-->
+<!--    <button class="translator-action__button" type="button" disabled>-->
+<!--      Fordítás-->
+<!--    </button>-->
+<!--    <p class="translator-action__hint" role="status">-->
+<!--      A fordítás a Hekrilon-ábécé elkészültéig nem használható.-->
+<!--    </p>-->
+<!--  </div>-->
+<!--</main>-->
+
+
+<main class="hekrilon-translator">
+  <header class="hekrilon-translator__header">
+    <p class="hekrilon-translator__eyebrow">Hekrilön</p>
+
+    <h1>Hekrilön fordító</h1>
+
+    <p class="hekrilon-translator__intro">
+      Írd be a latin betűs szöveget, és a hozzá tartozó
+      Hekrilön-betűképek automatikusan megjelennek.
+    </p>
+  </header>
+
+  <section class="translator-panels" aria-label="Fordító mezők">
+
+    <!-- Latin szöveg bevitele -->
+    <label class="translator-panel">
+      <span class="translator-panel__title">
+        Latin betűs szöveg
+      </span>
+
+      <textarea
+        class="translator-panel__input"
+        aria-label="Latin betűs szöveg"
+        placeholder="Ide írd a latin betűs szöveget..."
+        [value]="latinText"
+        (input)="onLatinInput($event)"
+        spellcheck="false"
+      ></textarea>
+
+      <span class="translator-panel__counter">
+        {{ latinText.length }} karakter
+      </span>
+    </label>
+
+    <!-- Hekrilön képes fordítás -->
+    <div class="translator-panel">
+      <span class="translator-panel__title">
+        Hekrilön szöveg
+      </span>
+
+      <div
+        class="translator-panel__output"
+        role="region"
+        aria-label="Hekrilön képes fordítás"
+        aria-live="polite"
+      >
+        @if (latinText.length === 0) {
+          <p class="translator-panel__empty">
+            A Hekrilön-betűképek itt jelennek majd meg...
+          </p>
+        } @else {
+          <div class="hekrilon-glyphs">
+            @for (glyph of translatedGlyphs; track glyph.id) {
+              @if (glyph.type === 'letter') {
+                <span
+                  class="hekrilon-glyph"
+                  [attr.title]="'Latin betű: ' + glyph.character"
+                >
+                  @if (!glyph.imageFailed) {
+                    <img
+                      class="hekrilon-glyph__image"
+                      [src]="glyph.imagePath"
+                      [alt]="'Hekrilön betű: ' + glyph.character"
+                      (error)="onImageError(glyph)"
+                    />
+                  } @else {
+                    <span
+                      class="hekrilon-glyph__placeholder"
+                      [attr.aria-label]="'A ' + glyph.character + ' betű képe még nincs feltöltve'"
+                    >
+                      {{ glyph.character }}
+                    </span>
+                  }
+                </span>
+              } @else if (glyph.type === 'space') {
+                <span
+                  class="hekrilon-glyph__space"
+                  aria-label="Szóköz"
+                ></span>
+              } @else {
+                <span class="hekrilon-glyph__punctuation">
+                  {{ glyph.character }}
+                </span>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <span class="translator-panel__counter">
+        A még hiányzó képek helyén ideiglenes betűjel látható.
+      </span>
+    </div>
+  </section>
+
+  <!-- Műveletek -->
+  <div class="translator-action">
+    <button
+      class="translator-action__button"
+      type="button"
+      (click)="clearText()"
+      [disabled]="latinText.length === 0"
+    >
+      <span aria-hidden="true">↻</span>
+      Szöveg törlése
+    </button>
+
+    <p class="translator-action__hint" role="status">
+      A képes átalakítás gépelés közben automatikusan frissül.
+    </p>
+  </div>
+</main>
+

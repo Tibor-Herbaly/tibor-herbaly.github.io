@@ -1,5 +1,6 @@
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+<nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar"
+     [ngClass]="'navbar-color-' + navbarColor">
   <div class="container-fluid">
 
     <!-- Logó / Udvar -->
@@ -139,6 +140,11 @@
             <li>
               <a class="dropdown-item" href="writings">
                 <i class="bi bi-journal-text"></i> Írások
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="hekrilon">
+                <i class="bi bi-journal-text"></i> Hekrilön
               </a>
             </li>
             <li>

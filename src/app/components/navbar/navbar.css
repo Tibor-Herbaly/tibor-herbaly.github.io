@@ -6,6 +6,42 @@
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
+.custom-navbar.navbar-color-gray {
+  background: #e5e7eb !important;
+}
+
+.custom-navbar.navbar-color-blue {
+  background: #dbeafe !important;
+}
+
+.custom-navbar.navbar-color-green {
+  background: #dcfce7 !important;
+}
+
+.custom-navbar.navbar-color-orange {
+  background: #ffedd5 !important;
+}
+
+.custom-navbar.navbar-color-yellow {
+  background: #fef9c3 !important;
+}
+
+.custom-navbar.navbar-color-pink {
+  background: #fce7f3 !important;
+}
+
+.custom-navbar.navbar-color-red {
+  background: #fee2e2 !important;
+}
+
+.custom-navbar.navbar-color-brown {
+  background: #efdfd0 !important;
+}
+
+.custom-navbar.navbar-color-purple {
+  background: #ede9fe !important;
+}
+
 /* Udvar felirat */
 .custom-navbar .navbar-brand {
   color: #253858;

@@ -5,6 +5,7 @@ import {LoginRequestModel} from '../models/register-login/login-request.model';
 import {LoginResponseModel} from '../models/register-login/login-response.model';
 import {RegistrationRequestModel} from '../models/register-login/registration-request.model';
 import { BehaviorSubject } from 'rxjs';
+import { NavbarColorService } from './navbar-color.service';
 
 export interface CurrentUser {
   id: number;
@@ -22,7 +23,10 @@ export class AuthService {
 
   private loggedInUser?: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private navbarColorService: NavbarColorService
+  ) {}
 
   // Közös felhasználói állapot, amelyre a navbar is feliratkozik.
   private currentUserSubject = new BehaviorSubject<any>(null);
@@ -33,12 +37,26 @@ export class AuthService {
     return this.http.get<{ question: string }>(`${this.apiUrl}/captcha`, { withCredentials: true });
   }
 
+  getRegisterCaptcha(): Observable<{
+    pairs: string[];
+    firstPosition: number;
+    secondPosition: number;
+    instruction: string;
+  }> {
+    return this.http.get<{
+      pairs: string[];
+      firstPosition: number;
+      secondPosition: number;
+      instruction: string;
+    }>(`${this.apiUrl}/register-captcha`, { withCredentials: true });
+  }
+
   login(request: LoginRequestModel): Observable<LoginResponseModel> {
     return this.http.post<LoginResponseModel>(`${this.apiUrl}/login`, request, { withCredentials: true });
   }
 
   register(request: RegistrationRequestModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, request);
+    return this.http.post(`${this.apiUrl}/register`, request, { withCredentials: true });
   }
 
   verifyCode(payload: any): Observable<any> {
@@ -69,13 +87,19 @@ export class AuthService {
     return this.http.post<void>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
   }
 
-  deleteAccount(): Observable<string> {
-    const email = localStorage.getItem('userEmail');
+  deleteAccount(code: string): Observable<string> {
     return this.http.delete(`${this.apiUrl}/delete`, {
-      body: { email: email },
+      body: { code },
       responseType: 'text', // ha szöveget vársz vissza
       withCredentials: true
     });
+  }
+
+  getAccountDeletionCode(): Observable<{ code: string }> {
+    return this.http.get<{ code: string }>(
+      `${this.apiUrl}/profile/delete-code`,
+      { withCredentials: true }
+    );
   }
 
   getUserName(): string | null {
@@ -83,6 +107,7 @@ export class AuthService {
   }
 
   clearSession(): void {
+    this.navbarColorService.setUser(null);
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userId');
@@ -92,6 +117,7 @@ export class AuthService {
   }
 
   setUser(user: any) {
+    this.navbarColorService.setUser(user?.id ?? null);
     // tárold belső változóban
     this.loggedInUser = user;
     this.currentUserSubject.next(user);
@@ -178,6 +204,27 @@ export class AuthService {
     return this.http.put<{ message: string }>(
       `${this.apiUrl}/profile/password`,
       { currentPassword, newPassword },
+      { withCredentials: true }
+    );
+  }
+
+  requestProfilePasswordResetCode(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/profile/password-reset-code`,
+      { email },
+      { withCredentials: true }
+    );
+  }
+
+  resetProfilePassword(
+    email: string,
+    code: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/profile/password-reset`,
+      { email, code, newPassword, confirmPassword },
       { withCredentials: true }
     );
   }

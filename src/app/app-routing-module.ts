@@ -24,6 +24,9 @@ import {AdminTibberComponent} from './components/others/admin-tibber.component/a
 import {AndroidAppComponent} from './components/android-app.component/android-app.component';
 import {BlackjackComponent} from './components/games/blackjack.component/blackjack.component';
 import {WritingsComponent} from './components/others/writings.component/writings.component';
+import {
+  HekrilonHerzonalyComponent
+} from './components/others/hekrilon-herzonaly.component/hekrilon-herzonaly.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -55,7 +58,8 @@ const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'weather', component: WeatherDetailsComponent },
   { path: 'admin-tibber', component: AdminTibberComponent },
-  { path: 'writings', component: WritingsComponent }
+  { path: 'writings', component: WritingsComponent },
+  { path: 'hekrilon', component: HekrilonHerzonalyComponent }
 
 ];
 

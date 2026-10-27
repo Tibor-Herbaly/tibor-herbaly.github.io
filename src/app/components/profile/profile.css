@@ -61,6 +61,34 @@
   grid-column: 1 / -1;
 }
 
+.password-reset-card {
+  grid-column: 1 / -1;
+}
+
+.deletion-code-card {
+  grid-column: 1 / -1;
+}
+
+.deletion-code {
+  margin: 0;
+  padding: 14px 18px;
+  border: 1px dashed #c7ccef;
+  border-radius: 12px;
+  background: #f7f8ff;
+  color: #3949ab;
+  font-family: monospace;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-align: center;
+}
+
+.reset-password-form {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #e7eaf1;
+}
+
 .card-heading {
   display: flex;
   align-items: center;
@@ -183,6 +211,14 @@
   }
 
   .password-card {
+    grid-column: auto;
+  }
+
+  .password-reset-card {
+    grid-column: auto;
+  }
+
+  .deletion-code-card {
     grid-column: auto;
   }
 
