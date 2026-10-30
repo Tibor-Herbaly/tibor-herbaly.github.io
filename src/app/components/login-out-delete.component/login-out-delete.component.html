@@ -153,17 +153,40 @@
 
               <!-- CAPTCHA -->
               <div class="captcha m-3">
-                <p><b>{{ captchaQuestion }}</b></p>
-
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="captchaAnswer"
-                  name="captcha"
-                  placeholder="Írd ide a választ"
-                  required
-                  inputmode="numeric"
-                >
+                <p><b>{{ captchaInstruction }}</b></p>
+                <div class="captcha-pairs" aria-label="CAPTCHA számpárok">
+                  <span *ngFor="let pair of captchaPairs; let i = index">
+                    {{ i + 1 }}. <strong>{{ pair }}</strong>
+                  </span>
+                </div>
+                <div class="captcha-answers">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="captchaFirst"
+                    name="captchaFirst"
+                    placeholder="Első számpár"
+                    required
+                    maxlength="2"
+                    pattern="[0-9]{2}"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    aria-label="Első kért számpár"
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="captchaSecond"
+                    name="captchaSecond"
+                    placeholder="Második számpár"
+                    required
+                    maxlength="2"
+                    pattern="[0-9]{2}"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    aria-label="Második kért számpár"
+                  >
+                </div>
 
                 <button
                   type="button"

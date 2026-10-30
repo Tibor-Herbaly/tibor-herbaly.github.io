@@ -22,6 +22,8 @@ export class HekrilonHerzonalyComponent {
   // A bal oldali mező szövege.
   latinText = '';
 
+  isAlphabetGuideVisible = false;
+
   // A jobb oldali képes fordítás elemei.
   translatedGlyphs: HekrilonGlyph[] = [];
 
@@ -54,7 +56,17 @@ export class HekrilonHerzonalyComponent {
     X: 'assets/hekrilon/big/X.png',
     Y: 'assets/hekrilon/big/Y.png',
     Z: 'assets/hekrilon/big/Z.png',
-
+    // Magyar kétjegyű mássalhangzók
+    Cs: 'assets/hekrilon/big/Cs.png',
+    Dz: 'assets/hekrilon/big/Dz.png',
+    Dzs: 'assets/hekrilon/big/Dzs.png',
+    Gy: 'assets/hekrilon/big/Gy.png',
+    Ly: 'assets/hekrilon/big/Ly.png',
+    Ny: 'assets/hekrilon/big/Ny.png',
+    Sz: 'assets/hekrilon/big/Sz.png',
+    Ty: 'assets/hekrilon/big/Ty.png',
+    Zs: 'assets/hekrilon/big/Zs.png',
+    // Magyar ékezetes nagybetűk
     Á: 'assets/hekrilon/big/Á.png',
     É: 'assets/hekrilon/big/É.png',
     Í: 'assets/hekrilon/big/Í.png',
@@ -94,24 +106,33 @@ export class HekrilonHerzonalyComponent {
     x: 'assets/hekrilon/small/x.png',
     y: 'assets/hekrilon/small/y.png',
     z: 'assets/hekrilon/small/z.png',
-
+    // Magyar kétjegyű kis mássalhangzók:
+    cs: 'assets/hekrilon/small/cs.png',
+    dz: 'assets/hekrilon/small/dz.png',
+    dzs: 'assets/hekrilon/small/dzs.png',
+    gy: 'assets/hekrilon/small/gy.png',
+    ly: 'assets/hekrilon/small/ly.png',
+    ny: 'assets/hekrilon/small/ny.png',
+    sz: 'assets/hekrilon/small/sz.png',
+    ty: 'assets/hekrilon/small/ty.png',
+    zs: 'assets/hekrilon/small/zs.png',
+    // Magyar ékezetes kisbetűk:
     á: 'assets/hekrilon/small/á.png',
-    é: 'assets/hekrilon/small/é.png',
-    í: 'assets/hekrilon/small/í.png',
-    ó: 'assets/hekrilon/small/ó.png',
-    ö: 'assets/hekrilon/small/ö.png',
-    ő: 'assets/hekrilon/small/ő.png',
-    ú: 'assets/hekrilon/small/ú.png',
-    ü: 'assets/hekrilon/small/ü.png',
-    ű: 'assets/hekrilon/small/ű.png'
+    é: 'assets/hekrilon/small/long_e.png',
+    í: 'assets/hekrilon/small/long_i.png',
+    ó: 'assets/hekrilon/small/long_o.png',
+    ö: 'assets/hekrilon/small/short_her_o.png',
+    ő: 'assets/hekrilon/small/long_her_o.png',
+    ú: 'assets/hekrilon/small/long_u.png',
+    ü: 'assets/hekrilon/small/short_points_u.png',
+    ű: 'assets/hekrilon/small/long_points_u.png'
   };
 
 
-  // Magyar két- és háromjegyű mássalhangzók,
-  // valamint ezek hosszú alakjai.
-  // A hosszabb alakok mindig előbb szerepelnek!
+  // Magyar hosszú és többjegyű mássalhangzók.
+// Mindig a hosszabb alakokat keressük először!
   private readonly specialLetters: string[] = [
-    // Hosszú háromjegyű és kétjegyű mássalhangzók
+    // Hosszú, nagybetűs mássalhangzók
     'DDZS',
     'CCS',
     'DDZ',
@@ -122,25 +143,39 @@ export class HekrilonHerzonalyComponent {
     'TTY',
     'ZZS',
 
+    // Hosszú, kisbetűs mássalhangzók
+    'ddzs',
+    'ccs',
+    'ddz',
+    'ggy',
+    'lly',
+    'nny',
+    'ssz',
+    'tty',
+    'zzs',
+
     // Háromjegyű mássalhangzó
-    'DZS',
+    'Dzs',
+    'dzs',
 
     // Kétjegyű mássalhangzók
-    'CS',
-    'DZ',
-    'GY',
-    'LY',
-    'NY',
-    'SZ',
-    'TY',
-    'ZS'
+    'Cs', 'Dz', 'Gy', 'Ly', 'Ny', 'Sz', 'Ty', 'Zs',
+    'cs', 'dz', 'gy', 'ly', 'ny', 'sz', 'ty', 'zs'
   ];
 
   // Magyar mássalhangzók az egyszerű megkettőzéshez.
   private readonly consonants = new Set([
+    //Nagybetűs változatok, ez dupla nagybetű lesz.
     'B', 'C', 'D', 'F', 'G', 'H', 'J',
     'K', 'L', 'M', 'N', 'P', 'Q', 'R',
-    'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
+    'S', 'T', 'V', 'W', 'X', 'Y', 'Z',
+
+  ]);
+  //Kisbetűs változatok, ez dupla kisbetű lesz.
+  private readonly consonantsLowercase = new Set([
+    'b', 'c', 'd', 'f', 'g', 'h', 'j',
+    'k', 'l', 'm', 'n', 'p', 'q', 'r',
+    's', 't', 'v', 'w', 'x', 'y', 'z'
   ]);
 
   // Gépeléskor automatikusan frissítjük a fordítást.
@@ -150,6 +185,7 @@ export class HekrilonHerzonalyComponent {
     this.latinText = target.value;
     this.translateText();
   }
+
 
   private translateText(): void {
     const text = this.latinText;
@@ -176,16 +212,33 @@ export class HekrilonHerzonalyComponent {
       }
 
       // 1. Először a leghosszabb magyar betűkapcsolatot keressük.
-      const specialLetter = this.specialLetters.find(
-        letter => text.startsWith(letter, index)
+      const specialLetter = this.specialLetters.find(letter =>
+        text.startsWith(letter, index)
       );
 
       if (specialLetter) {
+        let imagePath: string;
+
+        // Hosszú, háromjegyű vagy kétjegyű mássalhangzók.
+        if (['DDZS', 'CCS', 'DDZ', 'GGY', 'LLY',
+          'NNY', 'SSZ', 'TTY', 'ZZS'].includes(specialLetter)) {
+          imagePath = `assets/hekrilon/big-double/${specialLetter}.png`;
+        } else if (['ddzs', 'ccs', 'ddz', 'ggy', 'lly',
+          'nny', 'ssz', 'tty', 'zzs'].includes(specialLetter)) {
+          imagePath = `assets/hekrilon/double/${specialLetter}.png`;
+        } else if (specialLetter === 'Dzs' ||
+          ['Cs', 'Dz', 'Gy', 'Ly', 'Ny', 'Sz', 'Ty', 'Zs'].includes(specialLetter)) {
+          imagePath = `assets/hekrilon/big/${specialLetter}.png`;
+        } else {
+          // Kisbetűs cs, dzs, gy stb.
+          imagePath = `assets/hekrilon/small/${specialLetter}.png`;
+        }
+
         glyphs.push({
           id: glyphId++,
           character: specialLetter,
           type: 'letter',
-          imagePath: `assets/hekrilon/${specialLetter}.png`,
+          imagePath,
           imageFailed: false
         });
 
@@ -193,8 +246,7 @@ export class HekrilonHerzonalyComponent {
         continue;
       }
 
-      // 2. Egyszerű, kétszer leírt mássalhangzó.
-      // Például BB, TT, SS, ZZ.
+      // 2. Egyszerű, kétszer leírt nagybetűs mássalhangzó.
       const nextCharacter = text[index + 1];
 
       if (
@@ -207,7 +259,7 @@ export class HekrilonHerzonalyComponent {
           id: glyphId++,
           character: doubledLetter,
           type: 'letter',
-          imagePath: `assets/hekrilon/${doubledLetter}.png`,
+          imagePath: `assets/hekrilon/big-double/${doubledLetter}.png`,
           imageFailed: false
         });
 
@@ -215,7 +267,27 @@ export class HekrilonHerzonalyComponent {
         continue;
       }
 
-      // 3. Egyetlen latin betű.
+      // 3. Egyszerű, kétszer leírt kisbetűs mássalhangzó.
+      if (
+        nextCharacter === character &&
+        this.consonantsLowercase.has(character)
+      ) {
+        const doubledLetter = character + nextCharacter;
+
+        glyphs.push({
+          id: glyphId++,
+          character: doubledLetter,
+          type: 'letter',
+          imagePath: `assets/hekrilon/double/${doubledLetter}.png`,
+          imageFailed: false
+        });
+
+        index += 2;
+        continue;
+      }
+
+      // 4. Egyetlen latin betű: nagybetűhöz nagy,
+      // kisbetűhöz kis Hekrilön-kép tartozik.
       const imagePath =
         character === character.toUpperCase()
           ? this.letterImages[character]
@@ -233,7 +305,7 @@ export class HekrilonHerzonalyComponent {
         // Írásjelek és egyelőre nem támogatott karakterek.
         glyphs.push({
           id: glyphId++,
-          character: this.latinText[index],
+          character,
           type: 'punctuation',
           imagePath: '',
           imageFailed: false
@@ -245,6 +317,7 @@ export class HekrilonHerzonalyComponent {
 
     this.translatedGlyphs = glyphs;
   }
+
 
   // Hiányzó képfájl esetén egy helykitöltőt mutatunk.
   onImageError(glyph: HekrilonGlyph): void {

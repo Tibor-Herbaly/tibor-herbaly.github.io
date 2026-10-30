@@ -33,11 +33,7 @@ export class AuthService {
 
   readonly currentUser$ = this.currentUserSubject.asObservable();
 
-  getCaptcha(): Observable<{ question: string }> {
-    return this.http.get<{ question: string }>(`${this.apiUrl}/captcha`, { withCredentials: true });
-  }
-
-  getRegisterCaptcha(): Observable<{
+  getCaptcha(): Observable<{
     pairs: string[];
     firstPosition: number;
     secondPosition: number;
@@ -48,7 +44,27 @@ export class AuthService {
       firstPosition: number;
       secondPosition: number;
       instruction: string;
+    }>(`${this.apiUrl}/captcha`, { withCredentials: true });
+  }
+
+  getRegisterCaptcha(): Observable<{
+    emojis: string[];
+    instruction: string;
+  }> {
+    return this.http.get<{
+      emojis: string[];
+      instruction: string;
     }>(`${this.apiUrl}/register-captcha`, { withCredentials: true });
+  }
+
+  getContactCaptcha(): Observable<{
+    choices: string[];
+    rows: string[];
+  }> {
+    return this.http.get<{
+      choices: string[];
+      rows: string[];
+    }>(`${this.apiUrl}/contact-captcha`, { withCredentials: true });
   }
 
   login(request: LoginRequestModel): Observable<LoginResponseModel> {
@@ -171,11 +187,12 @@ export class AuthService {
   loginWithTemporaryCode(
     email: string,
     code: string,
-    captcha: string
+    captchaFirst: string,
+    captchaSecond: string
   ): Observable<LoginResponseModel> {
     return this.http.post<LoginResponseModel>(
       `${this.apiUrl}/login-with-temporary-code`,
-      { email, code, captcha },
+      { email, code, captchaFirst, captchaSecond },
       { withCredentials: true }
     );
   }

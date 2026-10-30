@@ -51,6 +51,27 @@
     </p>
   </header>
 
+  <section class="alphabet-guide" aria-label="Hekrilön ábécé">
+    <button
+      class="translator-action__button"
+      type="button"
+      [attr.aria-expanded]="isAlphabetGuideVisible"
+      aria-controls="hekrilon-alphabet-guide-image"
+      (click)="isAlphabetGuideVisible = !isAlphabetGuideVisible"
+    >
+      Hekrilön néjöléhez kattints ide!
+    </button>
+
+    @if (isAlphabetGuideVisible) {
+      <img
+        id="hekrilon-alphabet-guide-image"
+        class="alphabet-guide__image"
+        src="assets/images/hekrilon-herzonaly-abc-nejole.png"
+        alt="A Hekrilön ábécé néjölése"
+      />
+    }
+  </section>
+
   <section class="translator-panels" aria-label="Fordító mezők">
 
     <!-- Latin szöveg bevitele -->
@@ -151,4 +172,3 @@
     </p>
   </div>
 </main>
-

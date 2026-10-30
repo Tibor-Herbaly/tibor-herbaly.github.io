@@ -4,6 +4,111 @@
   transition: transform 0.05s ease;
 }
 
+.captcha {
+  padding: 1rem;
+  border: 1px solid #d5dde4;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.captcha__title {
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+}
+
+.captcha__instructions,
+.captcha__status {
+  margin-bottom: 0.75rem;
+}
+
+.captcha__choices {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(2.5rem, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.captcha__choice,
+.captcha__drop-target {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.25rem;
+  border: 1px solid #d5dde4;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.captcha__choice {
+  cursor: grab;
+  touch-action: none;
+}
+
+.captcha__choice:active {
+  cursor: grabbing;
+}
+
+.captcha__choice--selected {
+  border-color: #527b9e;
+  outline: 2px solid rgb(82 123 158 / 35%);
+}
+
+.captcha__rows {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 20rem;
+  margin-bottom: 0.75rem;
+}
+
+.captcha__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.captcha__fixed-emoji {
+  font-size: 1.5rem;
+}
+
+.captcha__equals {
+  color: #66717e;
+}
+
+.captcha__drop-target {
+  border: 2px dashed #8995a1;
+  background: #fff;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.captcha__drop-target:focus-visible,
+.captcha__choice:focus-visible {
+  outline: 3px solid rgb(82 123 158 / 35%);
+  outline-offset: 2px;
+}
+
+.captcha__row--complete .captcha__drop-target {
+  border-color: #198754;
+}
+
+.captcha__row--incorrect .captcha__drop-target {
+  border-color: #dc3545;
+}
+
+.captcha__status {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .captcha__choices {
+    grid-template-columns: repeat(5, minmax(2.5rem, 1fr));
+  }
+}
+
 /* halvány ismétlődő háttér */
 :host::before {
   content: "";

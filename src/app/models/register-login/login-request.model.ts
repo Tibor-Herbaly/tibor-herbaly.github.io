@@ -2,5 +2,6 @@ export interface LoginRequestModel {
 
   email: string;
   password: string;
-  captcha: string;
+  captchaFirst: string;
+  captchaSecond: string;
 }

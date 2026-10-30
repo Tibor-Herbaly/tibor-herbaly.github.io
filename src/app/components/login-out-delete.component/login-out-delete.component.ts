@@ -13,8 +13,10 @@ import {LoginResponseModel} from '../../models/register-login/login-response.mod
 export class LoginOutDeleteComponent implements OnInit {
   email = '';
   password = '';
-  captchaAnswer = '';
-  captchaQuestion = '';
+  captchaPairs: string[] = [];
+  captchaInstruction = '';
+  captchaFirst = '';
+  captchaSecond = '';
   errorMessage = '';
   logoutMessage = '';
   showPassword = false; // Jelszó láthatóság állapota
@@ -37,11 +39,13 @@ export class LoginOutDeleteComponent implements OnInit {
   loadCaptcha() {
     this.auth.getCaptcha().subscribe({
       next: data => {
-        this.captchaQuestion = data.question;
-        this.captchaAnswer = '';
+        this.captchaPairs = data.pairs;
+        this.captchaInstruction = data.instruction;
+        this.captchaFirst = '';
+        this.captchaSecond = '';
       },
       error: () => {
-        this.captchaQuestion = 'Hiba a CAPTCHA betöltésekor';
+        this.captchaInstruction = 'Hiba a CAPTCHA betöltésekor';
       }
     });
   }
@@ -59,7 +63,8 @@ export class LoginOutDeleteComponent implements OnInit {
       this.auth.loginWithTemporaryCode(
         this.recoveryEmail.trim(),
         this.temporaryLoginCode.trim(),
-        this.captchaAnswer
+        this.captchaFirst,
+        this.captchaSecond
       ).subscribe({
         next: response => this.finishLogin(response),
         error: err => {
@@ -84,7 +89,8 @@ export class LoginOutDeleteComponent implements OnInit {
     const request: LoginRequestModel = {
       email: this.email,
       password: this.password,
-      captcha: this.captchaAnswer
+      captchaFirst: this.captchaFirst,
+      captchaSecond: this.captchaSecond
     };
 
     this.auth.login(request).subscribe({

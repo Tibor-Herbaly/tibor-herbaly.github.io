@@ -28,7 +28,77 @@
       <textarea id="message" class="form-control" rows="5" [(ngModel)]="form.message" name="message" required></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">Küldés</button>
+    <section class="captcha mb-3" aria-labelledby="captcha-title">
+      <h3 id="captcha-title" class="captcha__title">Emoji captcha</h3>
+      <p class="captcha__instructions">
+        Húzd a megfelelő emojit a sor végén lévő helyre, hogy mindegyik sorban három egyforma legyen.
+        Érintőképernyőn koppints az emojira, majd a megfelelő sorra.
+      </p>
+
+      <div class="captcha__choices" aria-label="Választható emojik">
+        @for (emoji of captchaChoices; track emoji) {
+          <button
+            type="button"
+            class="captcha__choice"
+            [class.captcha__choice--selected]="selectedCaptchaEmoji === emoji"
+            [attr.aria-pressed]="selectedCaptchaEmoji === emoji"
+            [attr.aria-label]="'Emoji kiválasztása: ' + emoji"
+            (pointerdown)="startCaptchaDrag($event, emoji)"
+            (click)="selectCaptchaEmoji(emoji)"
+          >
+            {{ emoji }}
+          </button>
+        }
+      </div>
+
+      <div class="captcha__rows" aria-label="Egészítsd ki a négy emoji sort">
+        @for (row of captchaRows; track row.id) {
+          <div
+            class="captcha__row"
+            [class.captcha__row--complete]="row.placedEmoji === row.emoji"
+            [class.captcha__row--incorrect]="row.placedEmoji !== null && row.placedEmoji !== row.emoji"
+          >
+            <span class="captcha__fixed-emoji" aria-hidden="true">{{ row.emoji }} {{ row.emoji }}</span>
+            <span class="captcha__equals" aria-hidden="true">=</span>
+            <button
+              type="button"
+              class="captcha__drop-target"
+              [attr.data-captcha-row]="row.id"
+              [attr.aria-label]="'Húzd ide a megfelelő emojit a ' + (row.id + 1) + '. sor befejezéséhez'"
+              (click)="placeSelectedEmoji(row)"
+              (keydown)="onCaptchaRowKeydown($event, row)"
+            >
+              {{ row.placedEmoji || '⬜' }}
+            </button>
+          </div>
+        }
+      </div>
+
+      <p class="captcha__status" aria-live="polite">
+        @if (isCaptchaSolved) {
+          A captcha helyes, elküldheted az üzenetet.
+        } @else if (isCaptchaComplete) {
+          Nem minden sor helyes. Javítsd a válaszokat, vagy kérj új captchát.
+        } @else if (selectedCaptchaEmoji) {
+          Kiválasztva: {{ selectedCaptchaEmoji }} — válaszd ki a megfelelő sort.
+        } @else {
+          Minden sor végén két emoji látható; egészítsd ki őket egy harmadikkal.
+        }
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="loadCaptcha()"
+        [disabled]="captchaLoading"
+      >
+        {{ captchaLoading ? 'Captcha betöltése...' : 'Új captcha' }}
+      </button>
+    </section>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!captchaLoaded || captchaLoading">
+      Küldés
+    </button>
     <p>Megnyomás után kérem várjon 3 mp -et !</p>
   </form>
 

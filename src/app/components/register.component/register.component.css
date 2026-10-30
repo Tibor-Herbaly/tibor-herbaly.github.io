@@ -6,31 +6,49 @@
   font-size: 0.9em;
 }
 
-.captcha-pairs {
+.captcha-emojis {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin: 12px 0;
 }
 
-.captcha-pairs span {
-  padding: 8px 10px;
+.captcha-emoji {
+  display: flex;
+  min-width: 76px;
+  min-height: 76px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
   border: 1px solid #dce1eb;
   border-radius: 8px;
   background: #f7f8fc;
+  cursor: pointer;
 }
 
-.captcha-answers {
-  display: flex;
-  gap: 10px;
+.captcha-emoji-symbol {
+  font-size: 2rem;
+  line-height: 1;
 }
 
-.captcha-answers .form-control {
-  max-width: 110px;
+.captcha-emoji input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.captcha-controls {
+  margin-top: 12px;
+}
+
+.captcha-controls button {
+  width: 100%;
 }
 
 @media (max-width: 480px) {
-  .captcha-answers {
-    flex-wrap: wrap;
+  .captcha-emoji {
+    min-width: 64px;
+    min-height: 68px;
   }
 }

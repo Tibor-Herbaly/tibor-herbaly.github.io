@@ -154,6 +154,22 @@
   line-height: 1.7;
 }
 
+.alphabet-guide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.alphabet-guide__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #d5dde4;
+  border-radius: 0.85rem;
+}
+
 .translator-panels {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

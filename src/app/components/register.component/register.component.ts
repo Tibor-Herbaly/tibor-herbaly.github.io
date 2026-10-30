@@ -21,10 +21,9 @@ export class RegisterComponent implements OnInit {
   wrongAttempts = 0;
   maxAttempts = 3;
   showPassword = false; // Jelszó láthatóság állapota, most nem működik.
-  captchaPairs: string[] = [];
+  captchaEmojis: string[] = [];
+  captchaSelected: boolean[] = [];
   captchaInstruction = '';
-  captchaFirst = '';
-  captchaSecond = '';
   captchaLoading = false;
   captchaLoaded = false;
 
@@ -40,10 +39,9 @@ export class RegisterComponent implements OnInit {
     this.captchaLoaded = false;
     this.auth.getRegisterCaptcha().subscribe({
       next: captcha => {
-        this.captchaPairs = captcha.pairs;
+        this.captchaEmojis = captcha.emojis;
         this.captchaInstruction = captcha.instruction;
-        this.captchaFirst = '';
-        this.captchaSecond = '';
+        this.captchaSelected = captcha.emojis.map(() => false);
         this.captchaLoaded = true;
         this.captchaLoading = false;
       },
@@ -91,8 +89,9 @@ export class RegisterComponent implements OnInit {
       name: this.name,
       password: this.password,
       confirmPassword: this.confirmPassword,
-      captchaFirst: this.captchaFirst,
-      captchaSecond: this.captchaSecond
+      captchaSelected: this.captchaSelected
+        .map((selected, index) => selected ? index : -1)
+        .filter(index => index >= 0)
     };
 
     this.auth.register(request).subscribe({

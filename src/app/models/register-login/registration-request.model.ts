@@ -4,6 +4,5 @@ export interface RegistrationRequestModel {
   name: string;
   password: string;
   confirmPassword: string;
-  captchaFirst: string;
-  captchaSecond: string;
+  captchaSelected: number[];
 }
