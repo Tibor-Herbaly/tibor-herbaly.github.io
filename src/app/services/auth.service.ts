@@ -33,18 +33,11 @@ export class AuthService {
 
   readonly currentUser$ = this.currentUserSubject.asObservable();
 
-  getCaptcha(): Observable<{
-    pairs: string[];
-    firstPosition: number;
-    secondPosition: number;
-    instruction: string;
-  }> {
+  getLoginCaptcha(): Observable<{ choices: string[]; rows: string[] }> {
     return this.http.get<{
-      pairs: string[];
-      firstPosition: number;
-      secondPosition: number;
-      instruction: string;
-    }>(`${this.apiUrl}/captcha`, { withCredentials: true });
+      choices: string[];
+      rows: string[];
+    }>(`${this.apiUrl}/login-captcha`, { withCredentials: true });
   }
 
   getRegisterCaptcha(): Observable<{
@@ -58,13 +51,17 @@ export class AuthService {
   }
 
   getContactCaptcha(): Observable<{
-    choices: string[];
-    rows: string[];
+    pairs: string[];
+    firstPosition: number;
+    secondPosition: number;
+    instruction: string;
   }> {
     return this.http.get<{
-      choices: string[];
-      rows: string[];
-    }>(`${this.apiUrl}/contact-captcha`, { withCredentials: true });
+      pairs: string[];
+      firstPosition: number;
+      secondPosition: number;
+      instruction: string;
+    }>('http://localhost:8080/api/contact/captcha', { withCredentials: true });
   }
 
   login(request: LoginRequestModel): Observable<LoginResponseModel> {
@@ -187,12 +184,11 @@ export class AuthService {
   loginWithTemporaryCode(
     email: string,
     code: string,
-    captchaFirst: string,
-    captchaSecond: string
+    captchaAnswers: string[]
   ): Observable<LoginResponseModel> {
     return this.http.post<LoginResponseModel>(
       `${this.apiUrl}/login-with-temporary-code`,
-      { email, code, captchaFirst, captchaSecond },
+      { email, code, captchaAnswers },
       { withCredentials: true }
     );
   }

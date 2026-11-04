@@ -162,12 +162,48 @@
   margin-bottom: 2rem;
 }
 
+.alphabet-guide__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 .alphabet-guide__image {
   display: block;
   width: 100%;
   height: auto;
   border: 1px solid #d5dde4;
   border-radius: 0.85rem;
+}
+
+.hekrilon-description {
+  box-sizing: border-box;
+  width: min(42rem, calc(100% - 2rem));
+  max-height: min(80vh, 48rem);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 0.85rem;
+  color: #202a36;
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 25%);
+}
+
+.hekrilon-description::backdrop {
+  background: rgb(20 30 40 / 55%);
+}
+
+.hekrilon-description__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  line-height: 1.6;
+}
+
+.hekrilon-description__content h2,
+.hekrilon-description__content p {
+  margin: 0;
 }
 
 .translator-panels {

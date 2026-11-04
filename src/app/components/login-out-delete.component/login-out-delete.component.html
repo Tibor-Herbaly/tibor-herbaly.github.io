@@ -152,50 +152,72 @@
               </div>
 
               <!-- CAPTCHA -->
-              <div class="captcha m-3">
-                <p><b>{{ captchaInstruction }}</b></p>
-                <div class="captcha-pairs" aria-label="CAPTCHA számpárok">
-                  <span *ngFor="let pair of captchaPairs; let i = index">
-                    {{ i + 1 }}. <strong>{{ pair }}</strong>
-                  </span>
-                </div>
-                <div class="captcha-answers">
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="captchaFirst"
-                    name="captchaFirst"
-                    placeholder="Első számpár"
-                    required
-                    maxlength="2"
-                    pattern="[0-9]{2}"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    aria-label="Első kért számpár"
+              <section class="captcha m-3" aria-labelledby="captcha-title">
+                <h3 id="captcha-title" class="captcha__title">Emoji captcha</h3>
+                <p class="captcha__instructions">
+                  Húzd a megfelelő emojit a sor végén lévő helyre, hogy mindegyik sorban három egyforma legyen.
+                  Érintőképernyőn koppints az emojira, majd a megfelelő sorra.
+                </p>
+
+                <div class="captcha__choices" aria-label="Választható emojik">
+                  <button
+                    *ngFor="let emoji of captchaChoices"
+                    type="button"
+                    class="captcha__choice"
+                    [class.captcha__choice--selected]="selectedCaptchaEmoji === emoji"
+                    [attr.aria-pressed]="selectedCaptchaEmoji === emoji"
+                    [attr.aria-label]="'Emoji kiválasztása: ' + emoji"
+                    (pointerdown)="startCaptchaDrag($event, emoji)"
+                    (click)="selectCaptchaEmoji(emoji)"
                   >
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="captchaSecond"
-                    name="captchaSecond"
-                    placeholder="Második számpár"
-                    required
-                    maxlength="2"
-                    pattern="[0-9]{2}"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    aria-label="Második kért számpár"
-                  >
+                    {{ emoji }}
+                  </button>
                 </div>
+
+                <div class="captcha__rows" aria-label="Egészítsd ki a négy emoji sort">
+                  <div
+                    *ngFor="let row of captchaRows"
+                    class="captcha__row"
+                    [class.captcha__row--complete]="row.placedEmoji === row.emoji"
+                    [class.captcha__row--incorrect]="row.placedEmoji !== null && row.placedEmoji !== row.emoji"
+                  >
+                    <span class="captcha__fixed-emoji" aria-hidden="true">{{ row.emoji }} {{ row.emoji }}</span>
+                    <span class="captcha__equals" aria-hidden="true">=</span>
+                    <button
+                      type="button"
+                      class="captcha__drop-target"
+                      [attr.data-captcha-row]="row.id"
+                      [attr.aria-label]="'Húzd ide a megfelelő emojit a ' + (row.id + 1) + '. sor befejezéséhez'"
+                      (click)="placeSelectedEmoji(row)"
+                      (keydown)="onCaptchaRowKeydown($event, row)"
+                    >
+                      {{ row.placedEmoji || '⬜' }}
+                    </button>
+                  </div>
+                </div>
+
+                <p class="captcha__status" aria-live="polite">
+                  <ng-container *ngIf="isCaptchaSolved; else captchaProgress">
+                    A captcha helyes, beléphetsz.
+                  </ng-container>
+                  <ng-template #captchaProgress>
+                    <ng-container *ngIf="isCaptchaComplete; else captchaIncomplete">
+                      Nem minden sor helyes. Javítsd a válaszokat, vagy kérj új captchát.
+                    </ng-container>
+                    <ng-template #captchaIncomplete>
+                      Minden sor végén két emoji látható; egészítsd ki őket egy harmadikkal.
+                    </ng-template>
+                  </ng-template>
+                </p>
 
                 <button
                   type="button"
-                  class="btn btn-outline-secondary mt-2"
+                  class="btn btn-outline-secondary"
                   (click)="loadCaptcha()"
                 >
-                  🔄 Új kérdés
+                  🔄 Új captcha
                 </button>
-              </div>
+              </section>
 
               <!-- HIBAÜZENET -->
               <p

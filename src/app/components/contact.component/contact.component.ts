@@ -1,11 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../../services/auth.service';
 
-interface CaptchaRow {
-  id: number;
-  emoji: string;
-  placedEmoji: string | null;
+interface ContactCaptcha {
+  pairs: string[];
+  firstPosition: number;
+  secondPosition: number;
+  instruction: string;
 }
 
 @Component({
@@ -18,12 +19,12 @@ export class ContactComponent implements OnInit {
   form = { name: '', email: '', subject: '', phone: '', message: '' };
   statusMessage = '';
   statusColor = 'black';
-  captchaChoices: string[] = [];
-  captchaRows: CaptchaRow[] = [];
-  selectedCaptchaEmoji: string | null = null;
+  captchaPairs: string[] = [];
+  captchaInstruction = '';
+  captchaFirst = '';
+  captchaSecond = '';
   captchaLoading = false;
   captchaLoaded = false;
-  private activeCaptchaEmoji: string | null = null;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -31,75 +32,15 @@ export class ContactComponent implements OnInit {
     this.loadCaptcha();
   }
 
-  get isCaptchaComplete(): boolean {
-    return this.captchaRows.every(row => row.placedEmoji !== null);
-  }
-
-  get isCaptchaSolved(): boolean {
-    return this.isCaptchaComplete &&
-      this.captchaRows.every(row => row.placedEmoji === row.emoji);
-  }
-
-  selectCaptchaEmoji(emoji: string): void {
-    this.selectedCaptchaEmoji = emoji;
-  }
-
-  startCaptchaDrag(event: PointerEvent, emoji: string): void {
-    if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) {
-      return;
-    }
-
-    event.preventDefault();
-    this.activeCaptchaEmoji = emoji;
-    this.selectedCaptchaEmoji = emoji;
-  }
-
-  @HostListener('document:pointerup', ['$event'])
-  finishCaptchaDrag(event: PointerEvent): void {
-    if (!this.activeCaptchaEmoji) {
-      return;
-    }
-
-    const target = document.elementFromPoint(event.clientX, event.clientY)
-      ?.closest<HTMLElement>('[data-captcha-row]');
-    const rowId = target?.dataset['captchaRow'];
-    const row = rowId === undefined
-      ? undefined
-      : this.captchaRows.find(candidate => candidate.id === Number(rowId));
-
-    if (row) {
-      this.placeCaptchaEmoji(row);
-    }
-
-    this.activeCaptchaEmoji = null;
-  }
-
-  placeSelectedEmoji(row: CaptchaRow): void {
-    if (this.selectedCaptchaEmoji) {
-      this.placeCaptchaEmoji(row);
-    }
-  }
-
-  onCaptchaRowKeydown(event: KeyboardEvent, row: CaptchaRow): void {
-    if ((event.key === 'Enter' || event.key === ' ') && this.selectedCaptchaEmoji) {
-      event.preventDefault();
-      this.placeSelectedEmoji(row);
-    }
-  }
-
   loadCaptcha(): void {
     this.captchaLoading = true;
     this.captchaLoaded = false;
     this.auth.getContactCaptcha().subscribe({
-      next: captcha => {
-        this.captchaChoices = captcha.choices;
-        this.captchaRows = captcha.rows.map((emoji, id) => ({
-          id,
-          emoji,
-          placedEmoji: null
-        }));
-        this.selectedCaptchaEmoji = null;
-        this.activeCaptchaEmoji = null;
+      next: (captcha: ContactCaptcha) => {
+        this.captchaPairs = captcha.pairs;
+        this.captchaInstruction = captcha.instruction;
+        this.captchaFirst = '';
+        this.captchaSecond = '';
         this.captchaLoaded = true;
         this.captchaLoading = false;
       },
@@ -121,7 +62,8 @@ export class ContactComponent implements OnInit {
 
     this.http.post<any>('http://localhost:8080/api/contact', {
       ...this.form,
-      captchaAnswers: this.captchaRows.map(row => row.placedEmoji)
+      captchaFirst: this.captchaFirst,
+      captchaSecond: this.captchaSecond
     }, { withCredentials: true }).subscribe({
       next: (response) => {
         this.statusMessage = response.message;
@@ -139,17 +81,6 @@ export class ContactComponent implements OnInit {
         this.hideStatusAfterDelay();
       }
     });
-  }
-
-  private placeCaptchaEmoji(row: CaptchaRow): void {
-    const emoji = this.activeCaptchaEmoji ?? this.selectedCaptchaEmoji;
-    if (!emoji) {
-      return;
-    }
-
-    row.placedEmoji = emoji;
-    this.selectedCaptchaEmoji = null;
-    this.activeCaptchaEmoji = null;
   }
 
   private hideStatusAfterDelay() {

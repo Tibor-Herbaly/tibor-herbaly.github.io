@@ -1,8 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {LoginRequestModel} from '../../models/register-login/login-request.model';
 import {LoginResponseModel} from '../../models/register-login/login-response.model';
+
+interface CaptchaRow {
+  id: number;
+  emoji: string;
+  placedEmoji: string | null;
+}
 
 @Component({
   selector: 'app-login-out-delete.component',
@@ -13,10 +19,10 @@ import {LoginResponseModel} from '../../models/register-login/login-response.mod
 export class LoginOutDeleteComponent implements OnInit {
   email = '';
   password = '';
-  captchaPairs: string[] = [];
-  captchaInstruction = '';
-  captchaFirst = '';
-  captchaSecond = '';
+  captchaChoices: string[] = [];
+  captchaRows: CaptchaRow[] = [];
+  selectedCaptchaEmoji: string | null = null;
+  private activeCaptchaEmoji: string | null = null;
   errorMessage = '';
   logoutMessage = '';
   showPassword = false; // Jelszó láthatóság állapota
@@ -37,17 +43,77 @@ export class LoginOutDeleteComponent implements OnInit {
   }
 
   loadCaptcha() {
-    this.auth.getCaptcha().subscribe({
+    this.auth.getLoginCaptcha().subscribe({
       next: data => {
-        this.captchaPairs = data.pairs;
-        this.captchaInstruction = data.instruction;
-        this.captchaFirst = '';
-        this.captchaSecond = '';
+        this.captchaChoices = data.choices;
+        this.captchaRows = data.rows.map((emoji, id) => ({
+          id,
+          emoji,
+          placedEmoji: null
+        }));
+        this.selectedCaptchaEmoji = null;
+        this.activeCaptchaEmoji = null;
       },
       error: () => {
-        this.captchaInstruction = 'Hiba a CAPTCHA betöltésekor';
+        this.errorMessage = 'Hiba a CAPTCHA betöltésekor';
       }
     });
+  }
+
+  get isCaptchaComplete(): boolean {
+    return this.captchaRows.every(row => row.placedEmoji !== null);
+  }
+
+  get isCaptchaSolved(): boolean {
+    return this.isCaptchaComplete &&
+      this.captchaRows.every(row => row.placedEmoji === row.emoji);
+  }
+
+  selectCaptchaEmoji(emoji: string): void {
+    this.selectedCaptchaEmoji = emoji;
+  }
+
+  startCaptchaDrag(event: PointerEvent, emoji: string): void {
+    if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) {
+      return;
+    }
+
+    event.preventDefault();
+    this.activeCaptchaEmoji = emoji;
+    this.selectedCaptchaEmoji = emoji;
+  }
+
+  @HostListener('document:pointerup', ['$event'])
+  finishCaptchaDrag(event: PointerEvent): void {
+    if (!this.activeCaptchaEmoji) {
+      return;
+    }
+
+    const target = document.elementFromPoint(event.clientX, event.clientY)
+      ?.closest<HTMLElement>('[data-captcha-row]');
+    const rowId = target?.dataset['captchaRow'];
+    const row = rowId === undefined
+      ? undefined
+      : this.captchaRows.find(candidate => candidate.id === Number(rowId));
+
+    if (row) {
+      this.placeCaptchaEmoji(row);
+    }
+
+    this.activeCaptchaEmoji = null;
+  }
+
+  placeSelectedEmoji(row: CaptchaRow): void {
+    if (this.selectedCaptchaEmoji) {
+      this.placeCaptchaEmoji(row);
+    }
+  }
+
+  onCaptchaRowKeydown(event: KeyboardEvent, row: CaptchaRow): void {
+    if ((event.key === 'Enter' || event.key === ' ') && this.selectedCaptchaEmoji) {
+      event.preventDefault();
+      this.placeSelectedEmoji(row);
+    }
   }
 
   onLogin() {
@@ -63,8 +129,7 @@ export class LoginOutDeleteComponent implements OnInit {
       this.auth.loginWithTemporaryCode(
         this.recoveryEmail.trim(),
         this.temporaryLoginCode.trim(),
-        this.captchaFirst,
-        this.captchaSecond
+        this.captchaRows.map(row => row.placedEmoji ?? '')
       ).subscribe({
         next: response => this.finishLogin(response),
         error: err => {
@@ -89,8 +154,7 @@ export class LoginOutDeleteComponent implements OnInit {
     const request: LoginRequestModel = {
       email: this.email,
       password: this.password,
-      captchaFirst: this.captchaFirst,
-      captchaSecond: this.captchaSecond
+      captchaAnswers: this.captchaRows.map(row => row.placedEmoji ?? '')
     };
 
     this.auth.login(request).subscribe({
@@ -224,6 +288,17 @@ export class LoginOutDeleteComponent implements OnInit {
         }
       }
     });
+  }
+
+  private placeCaptchaEmoji(row: CaptchaRow): void {
+    const emoji = this.activeCaptchaEmoji ?? this.selectedCaptchaEmoji;
+    if (!emoji) {
+      return;
+    }
+
+    row.placedEmoji = emoji;
+    this.selectedCaptchaEmoji = null;
+    this.activeCaptchaEmoji = null;
   }
 
 }

@@ -61,6 +61,10 @@
         <strong>Felhasználók</strong>
         <span>Lekérdezés jelszóval</span>
       </button>
+      <button type="button" class="section-tile" (click)="selectSection('writings')">
+        <strong>Írások közzététele</strong>
+        <span>Írások kezelése jelszóval</span>
+      </button>
     </div>
 
     <form *ngIf="selectedSection" (ngSubmit)="verifySectionPassword()">
@@ -185,6 +189,70 @@
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section *ngIf="activeSection === 'writings'" class="admin-card writings-admin-card"
+             aria-labelledby="admin-writings-title">
+      <div class="donations-heading">
+        <div>
+          <h1 id="admin-writings-title">Írások közzététele</h1>
+          <p class="donation-total">Elmentett írások: <strong>{{ writings.length }}</strong></p>
+        </div>
+        <button *ngIf="!writingEditorOpen" type="button" (click)="loadWritings()"
+                [disabled]="writingsLoading">
+          {{ writingsLoading ? 'Betöltés...' : 'Frissítés' }}
+        </button>
+      </div>
+
+      <p *ngIf="writingsLoading" role="status">Az írások betöltése...</p>
+      <p *ngIf="writingsError" class="error" role="alert">{{ writingsError }}</p>
+
+      <div *ngIf="!writingEditorOpen && !writingsLoading" class="admin-writing-list">
+        <button type="button" class="new-writing-button" (click)="createWriting()">+ Új írás</button>
+        <p *ngIf="writings.length === 0">Még nincs elmentett írás.</p>
+        <button *ngFor="let writing of writings" type="button" class="admin-writing-card"
+                (click)="editWriting(writing)">
+          <img *ngIf="writing.coverImage" [src]="writing.coverImage" [alt]="writing.title">
+          <span class="admin-writing-card__details">
+            <strong>{{ writing.title }}</strong>
+            <time [attr.datetime]="writing.publishedDate">{{ writing.publishedDate | date:'yyyy. MM. dd.':'UTC' }}</time>
+            <span>{{ writing.excerpt }}</span>
+          </span>
+        </button>
+      </div>
+
+      <form *ngIf="writingEditorOpen" class="writing-editor-form" (ngSubmit)="saveWriting()">
+        <div class="writing-editor-heading">
+          <h2>{{ editingWriting ? 'Írás szerkesztése' : 'Új írás' }}</h2>
+          <button type="button" class="secondary-button" (click)="cancelWritingEdit()"
+                  [disabled]="writingSaving">Vissza a listához</button>
+        </div>
+        <label for="writing-title">Cím</label>
+        <input id="writing-title" name="writingTitle" type="text" maxlength="300"
+               [(ngModel)]="writingTitle" required>
+        <label for="writing-date">Közzététel dátuma</label>
+        <input id="writing-date" name="writingDate" type="date" [(ngModel)]="writingDate" required>
+        <label for="writing-excerpt">Rövid ízelítő</label>
+        <textarea id="writing-excerpt" name="writingExcerpt" rows="3" maxlength="2000"
+                  [(ngModel)]="writingExcerpt" required
+                  placeholder="Rövid összefoglaló, ami a kártyán jelenik meg"></textarea>
+        <label for="writing-cover">Kártyakép útvonala</label>
+        <input id="writing-cover" name="writingCoverImage" type="text" maxlength="1000"
+               [(ngModel)]="writingCoverImage"
+               placeholder="assets/card-images/pelda.jpg">
+        <img *ngIf="writingCoverImage" class="writing-cover-preview"
+             [src]="writingCoverImage" [alt]="'Kártyakép előnézete: ' + writingTitle">
+        <label for="writing-content">Az írás szövege és képei</label>
+        <p class="editor-help">Illessze be vagy írja meg a szöveget az A4-es szélességű lapon. A beillesztett képek a tartalommal együtt mentődnek.</p>
+        <div #writingEditor id="writing-content" class="writing-paper" contenteditable="true" role="textbox"
+             aria-multiline="true" aria-label="Az írás szövege és képei"
+             (paste)="handleWritingPaste($event)"
+             (input)="updateWritingContent($event)"></div>
+        <p *ngIf="writingSaved" class="success" role="status">Az írás mentése sikerült.</p>
+        <button type="submit" [disabled]="writingSaving || writingsLoading">
+          {{ writingSaving ? 'Mentés...' : 'Mentés és közzététel' }}
+        </button>
+      </form>
     </section>
 
     <p *ngIf="errorMessage" class="error section-error" role="alert">{{ errorMessage }}</p>

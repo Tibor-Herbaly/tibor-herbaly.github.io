@@ -1,44 +1,3 @@
-<!--<main class="hekrilon-translator">-->
-<!--  <header class="hekrilon-translator__header">-->
-<!--    <p class="hekrilon-translator__eyebrow">Hekrilön</p>-->
-<!--    <h1>Hekrilön fordító</h1>-->
-<!--    <p class="hekrilon-translator__intro">-->
-<!--      Írd be a szöveget valamelyik mezőbe. A fordítás akkor lesz elérhető, ha elkészül a Hekrilön-->
-<!--      ábécé.-->
-<!--    </p>-->
-<!--  </header>-->
-
-<!--  <section class="translator-panels" aria-label="Fordító mezők">-->
-<!--    <label class="translator-panel">-->
-<!--      <span class="translator-panel__title">Latin betűs szöveg</span>-->
-<!--      <textarea-->
-<!--        class="translator-panel__input"-->
-<!--        aria-label="Latin betűs szöveg"-->
-<!--        placeholder="Ide írd a latin betűs szöveget..."-->
-<!--      ></textarea>-->
-<!--    </label>-->
-
-<!--    <label class="translator-panel">-->
-<!--      <span class="translator-panel__title">Hekrilön szöveg</span>-->
-<!--      <textarea-->
-<!--        class="translator-panel__input translator-panel__input&#45;&#45;hekrilon"-->
-<!--        aria-label="Hekrilon szöveg"-->
-<!--        placeholder="Ide írd a Hekrilon szöveget..."-->
-<!--      ></textarea>-->
-<!--    </label>-->
-<!--  </section>-->
-
-<!--  <div class="translator-action">-->
-<!--    <button class="translator-action__button" type="button" disabled>-->
-<!--      Fordítás-->
-<!--    </button>-->
-<!--    <p class="translator-action__hint" role="status">-->
-<!--      A fordítás a Hekrilon-ábécé elkészültéig nem használható.-->
-<!--    </p>-->
-<!--  </div>-->
-<!--</main>-->
-
-
 <main class="hekrilon-translator">
   <header class="hekrilon-translator__header">
     <p class="hekrilon-translator__eyebrow">Hekrilön</p>
@@ -48,19 +7,36 @@
     <p class="hekrilon-translator__intro">
       Írd be a latin betűs szöveget, és a hozzá tartozó
       Hekrilön-betűképek automatikusan megjelennek.
+      A Hekrilön írás szabályai:
+      Kis és nagy betűkre változik.
+      cs, dz, dzs, gy, ly, ny, sz, ty, zs -> egy db' Hekrilön betű jelenik meg.
+      Cs, Dz, Dzs, Gy, Ly, Ny, Sz, Ty, Zs -> nagy kezdő betűkre is nagy Herkrilön betű jelenik meg.
+      Dupla kicsi, nagy mássalhangzókra is ( bb, BB, cc, CC, dd, DD, ff, FF, gg, GG...) egy db' Hekrilön betű jelenik meg.
+      Csakúgy, mint ezekre: ccs, ddz, dzzs, ggy, lly, nny, ssz, tty, zzs -> úgyanúgy egy db' Hekrilön betű jelenik meg akár kicsi akár nagy.
     </p>
   </header>
 
   <section class="alphabet-guide" aria-label="Hekrilön ábécé">
-    <button
-      class="translator-action__button"
-      type="button"
-      [attr.aria-expanded]="isAlphabetGuideVisible"
-      aria-controls="hekrilon-alphabet-guide-image"
-      (click)="isAlphabetGuideVisible = !isAlphabetGuideVisible"
-    >
-      Hekrilön néjöléhez kattints ide!
-    </button>
+    <div class="alphabet-guide__actions">
+      <button
+        class="translator-action__button"
+        type="button"
+        [attr.aria-expanded]="isAlphabetGuideVisible"
+        aria-controls="hekrilon-alphabet-guide-image"
+        (click)="isAlphabetGuideVisible = !isAlphabetGuideVisible"
+      >
+        Hekrilön néjöléhez kattints ide!
+      </button>
+      <button
+        class="translator-action__button"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="hekrilon-description"
+        (click)="hekrilonDescription.showModal()"
+      >
+        Hekrilön leíráshoz kattints ide !
+      </button>
+    </div>
 
     @if (isAlphabetGuideVisible) {
       <img
@@ -71,6 +47,58 @@
       />
     }
   </section>
+
+  <dialog
+    #hekrilonDescription
+    id="hekrilon-description"
+    class="hekrilon-description"
+    aria-labelledby="hekrilon-description-title"
+  >
+    <div class="hekrilon-description__content">
+      <h2 id="hekrilon-description-title">Hekrilön leírás</h2>
+      <p>
+        Küldetésemnek éreztem, h' kitaláljak egy teljesen egyedi és mindentől független saját írás
+        rendszert. Amióta írni tudok, létrehoztam mindenféle betűket, titkos írásokat, később
+        bonyolultabb írás mechanizmusokat, (mint a Kínai), amik mai napig a füzetem tartalmát
+        alkotják, ezeket egyelőre még át kell dolgoznom, de a Hekrilön írás maradt fenn a
+        legtovább.
+      </p>
+      <p>A Hekrilön írás kifejlesztése során nagyon sok mindent figyelembe vettem:</p>
+      <p>
+        Tartalmazzon nagy és kis betűket, ahogy az Európia betűk is ezt teszik.
+      </p>
+      <p>
+        A lehető legegyszerűbb betűk legyenek, minél kevesebb vonalból álljanak és más népek
+        betűitől különbözzenek. Más szavakkal a világ létező összes betűjére nem hasonlíthat,
+        különösen nem a latin, az orosz, a görög és a Magyar rovás írás -ra.
+      </p>
+      <p>
+        Emez szabály igencsak nehéz volt, ugyanis a legnagyobb figyelem és tervezés mellett is
+        előfordul, h' bizonyos Hekrilön betűk hasonlítanak az Európai országok betűire. Ha másutt
+        a világban is előfordul hasonlóság, csak a véletlen műve lett.
+      </p>
+      <p>
+        Így tudtam követni a saját stílusomat. Ami Európai jelleget kapott. Nem minden betű
+        szimetrikus, de a szimetria egy picit többségben van. ( Ha horizontálisan nézzük.)
+      </p>
+      <p>
+        Különlegessége, h' minden hanghoz csak egy betű tartozik. És a kettősített nagy illetve kis
+        betűk (NN, nn, JJ, jj, LL, ll, RR, rr...) is egy betűnek felelnek meg.
+      </p>
+      <p>
+        44 db' nagy és 44 db' kis betű szerepel, valamint 26 db' kettősített nagy és 26 db'
+        kettősített kis betű látható, mindÖsszesen: 140 Hekrilön betűt létezik.
+      </p>
+      <p>Bátran kitalálhat bárki saját betűket magának, csak fantázia kell hozzá !</p>
+      <button
+        class="translator-action__button"
+        type="button"
+        (click)="hekrilonDescription.close()"
+      >
+        Bezárás
+      </button>
+    </div>
+  </dialog>
 
   <section class="translator-panels" aria-label="Fordító mezők">
 
